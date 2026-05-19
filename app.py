@@ -17,9 +17,8 @@ def conectar():
     )
 
 app = Flask(__name__)
-CORS(app) # Permite a comunicação direta entre o Front-end e o Back-end
+CORS(app) # comunicação direta entre o Front-end e o Back-end
 
-# --- BANCO DE DADOS EM MEMÓRIA (Estrutura Inicial de Dados) ---
 alunos = [
     {"id": 1, "nome": "Maria Souza", "email": "maria@email.com", "telefone": "71999998888", "nivel": "Intermediario"}
 ]
@@ -36,15 +35,14 @@ atendimentos = [
     {"id": 1, "aluno": "João Silva", "data": "2026-05-20", "horario": "14:00", "motivo": "Dificuldade em matemática", "status": "Agendado"}
 ]
 
-# --- ROTA PARA SERVIR O FRONT-END ---
 @app.route('/')
 def index():
-    # Serve o HTML original do aluno que está na pasta templates
+
     return render_template('siteReforco.html')
 
-# --- ENDPOINTS DA API REST (EXIGÊNCIA DA ETAPA 2) ---
 
-# 1. ENDPOINTS DE ALUNOS
+
+# ENDPOINTS DE ALUNOS
 @app.route('/api/alunos', methods=['GET'])
 def get_alunos():
 
@@ -100,7 +98,7 @@ def add_aluno():
     }), 201
 
 
-# 2. ENDPOINTS DE CURSOS
+# ENDPOINTS DE CURSOS
 @app.route('/api/cursos', methods=['GET'])
 def get_cursos():
     return jsonify(cursos), 200
@@ -126,7 +124,7 @@ def add_curso():
     return jsonify({"mensagem": "Curso cadastrado com sucesso!", "curso": novo_curso}), 201
 
 
-# 3. ENDPOINTS DE MATRÍCULAS (COM REGRA DE NEGÓCIO DO PROJETO)
+# ENDPOINTS DE MATRÍCULAS 
 @app.route('/api/matriculas', methods=['GET'])
 def get_matriculas():
     return jsonify(matriculas), 200
@@ -138,7 +136,7 @@ def add_matricula():
     curso_id = int(dados.get('curso_id'))
     data_mat = dados.get('data')
 
-    # REGRA DE NEGÓCIO: Verificar se o curso existe e tem vagas disponíveis
+
     curso_selecionado = next((c for c in cursos if c['id'] == curso_id), None)
     if not curso_selecionado:
         return jsonify({"erro": "Curso não encontrado."}), 44
@@ -146,10 +144,9 @@ def add_matricula():
     vagas_disponiveis = curso_selecionado['vagas_totais'] - curso_selecionado['vagas_ocupadas']
     
     if vagas_disponiveis <= 0:
-        # Se não houver vagas, barra a matrícula (Regra pedida na Unijorge)
+ 
         return jsonify({"erro": "Matrícula recusada: Não há vagas disponíveis neste curso!"}), 400
 
-    # Se tiver vagas, incrementa as ocupadas e confirma
     curso_selecionado['vagas_ocupadas'] += 1
     nova_mat = {
         "id": len(matriculas) + 1,
@@ -161,7 +158,7 @@ def add_matricula():
     return jsonify({"mensagem": "Matrícula realizada com sucesso!", "matricula": nova_mat}), 201
 
 
-# 4. ENDPOINTS DE ATENDIMENTOS (AGENDAMENTO DE REFORÇO)
+# ENDPOINTS DE ATENDIMENTOS (
 @app.route('/api/atendimentos', methods=['GET'])
 def get_atendimentos():
     return jsonify(atendimentos), 200
