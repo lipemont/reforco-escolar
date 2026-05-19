@@ -193,26 +193,26 @@
           <h1>Cadastro de Aluno</h1>
 
           <div class="card-formulario">
-            <form class="formulario-visual">
+            <form id="formAluno" class="formulario-visual">
               <div class="grade-formulario">
                 <div>
                   <label>Nome completo <span class="obrigatorio">*</span></label>
-                  <input placeholder="Digite o nome completo">
+                  <input id="nomeAluno" placeholder="Digite o nome completo">
                 </div>
 
                 <div>
                   <label>Email <span class="obrigatorio">*</span></label>
-                  <input type="email" placeholder="Digite o email">
+                  <input id="emailAluno" type="email" placeholder="Digite o email">
                 </div>
 
                 <div>
                   <label>Telefone</label>
-                  <input placeholder="(xx) xxxxx-xxxx">
+                  <input id="telefoneAluno" placeholder="(xx) xxxxx-xxxx">
                 </div>
 
                 <div>
                   <label>Nível</label>
-                  <select>
+                  <select id="nivelAluno">
                     <option>Selecione o nível</option>
                     <option>Básico</option>
                     <option>Intermediário</option>
@@ -715,13 +715,17 @@
     }
 
     function configurarFormularios() {
-      elementos.formularios.forEach(function(formulario) {
-        formulario.addEventListener('submit', function(evento) {
-          evento.preventDefault();
-          mostrarMensagem(configuracao.mensagens.formulario);
-        });
-      });
+
+  elementos.formularios.forEach(function(formulario) {
+    if (formulario.id === 'formAluno') {
+      return;
     }
+    formulario.addEventListener('submit', function(evento) {
+      evento.preventDefault();
+      mostrarMensagem(configuracao.mensagens.formulario);
+    });
+  });
+}
 
     function configurarBotoesDeCancelar() {
       document.addEventListener('click', function(evento) {
@@ -750,6 +754,49 @@
       configurarLogout();
       atualizarIcones();
     }
+
+    const formAluno = document.getElementById('formAluno');
+
+formAluno.addEventListener('submit', async function(evento) {
+
+  evento.preventDefault();
+
+  const dados = {
+    nome: document.getElementById('nomeAluno').value,
+    email: document.getElementById('emailAluno').value,
+    telefone: document.getElementById('telefoneAluno').value,
+    nivel: document.getElementById('nivelAluno').value
+  };
+
+  try {
+
+    const resposta = await fetch('/api/alunos', {
+
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify(dados)
+
+    });
+
+    const resultado = await resposta.json();
+
+    mostrarMensagem(resultado.mensagem);
+
+    formAluno.reset();
+
+  } catch (erro) {
+
+    mostrarMensagem('Erro ao cadastrar aluno.');
+
+    console.error(erro);
+
+  }
+
+});
 
     iniciarAplicacao();
   </script>
