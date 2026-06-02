@@ -93,7 +93,7 @@
           <div class="grade-cards">
             <div class="card-info">
               <i data-lucide="users" size="36"></i>
-              <div class="numero-card">0</div>
+              <div id="contadorAlunos" class="numero-card">0</div>
               <div class="texto-card">Total de Alunos</div>
             </div>
 
@@ -669,6 +669,7 @@
       adicionarClasse(elementos.telaLogin, 'oculto');
       removerClasse(elementos.aplicacao, 'oculto');
       abrirTela(configuracao.telaInicial);
+      carregarAlunos();
       mostrarMensagem(configuracao.mensagens.login);
     }
 
@@ -786,6 +787,8 @@ formAluno.addEventListener('submit', async function(evento) {
 
     mostrarMensagem(resultado.mensagem);
 
+    await carregarAlunos();
+
     formAluno.reset();
 
   } catch (erro) {
@@ -797,6 +800,45 @@ formAluno.addEventListener('submit', async function(evento) {
   }
 
 });
+
+  async function carregarAlunos() {
+
+  const resposta = await fetch('/api/alunos');
+  const alunos = await resposta.json();
+
+  const tbody = document.querySelector('#alunos tbody');
+
+  if (alunos.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="estado-vazio">
+          Nenhum aluno cadastrado.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = '';
+
+  alunos.forEach(aluno => {
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${aluno.nome}</td>
+        <td>${aluno.email}</td>
+        <td>${aluno.telefone}</td>
+        <td>${aluno.nivel}</td>
+        <td>-</td>
+      </tr>
+    `;
+
+  });
+
+  document.getElementById('contadorAlunos').textContent =
+  alunos.length;
+
+}
 
     iniciarAplicacao();
   </script>

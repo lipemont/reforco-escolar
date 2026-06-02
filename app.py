@@ -9,31 +9,16 @@ load_dotenv()
 def conectar():
 
     return mysql.connector.connect(
-        host=os.getenv('DB_HOST'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        database=os.getenv('DB_NAME'),
-        port=int(os.getenv('DB_PORT'))
+        host=os.getenv('MYSQLHOST'),
+        user=os.getenv('MYSQLUSER'),
+        password=os.getenv('MYSQLPASSWORD'),
+        database=os.getenv('MYSQLDATABASE'),
+        port=int(os.getenv('MYSQLPORT')),
+        autocommit=True
     )
 
 app = Flask(__name__)
 CORS(app) # comunicação direta entre o Front-end e o Back-end
-
-alunos = [
-    {"id": 1, "nome": "Maria Souza", "email": "maria@email.com", "telefone": "71999998888", "nivel": "Intermediario"}
-]
-
-cursos = [
-    {"id": 1, "nome": "Matemática Básica", "nivel": "Básico", "vagas_totais": 30, "vagas_ocupadas": 18}
-]
-
-matriculas = [
-    {"id": 1, "aluno_id": 1, "curso_id": 1, "data": "2026-05-18"}
-]
-
-atendimentos = [
-    {"id": 1, "aluno": "João Silva", "data": "2026-05-20", "horario": "14:00", "motivo": "Dificuldade em matemática", "status": "Agendado"}
-]
 
 @app.route('/')
 def index():
@@ -101,91 +86,199 @@ def add_aluno():
 # ENDPOINTS DE CURSOS
 @app.route('/api/cursos', methods=['GET'])
 def get_cursos():
+
+    conexao = conectar()
+    cursor = conexao.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM cursos")
+
+    cursos = cursor.fetchall()
+
+    cursor.close()
+    conexao.close()
+
     return jsonify(cursos), 200
 
 @app.route('/api/cursos', methods=['POST'])
 def add_curso():
+
     dados = request.get_json() or request.form
-    nome = dados.get('nome')
-    nivel = dados.get('nivel')
-    vagas_totais = dados.get('vagas_totais')
 
-    if not nome or not nivel or not vagas_totais:
-        return jsonify({"erro": "Campos obrigatórios ausentes para o curso."}), 400
+    conexao = conectar()
+    cursor = conexao.cursor()
 
-    novo_curso = {
-        "id": len(cursos) + 1,
-        "nome": nome,
-        "nivel": nivel,
-        "vagas_totais": int(vagas_totais),
-        "vagas_ocupadas": 0
-    }
-    cursos.append(novo_curso)
-    return jsonify({"mensagem": "Curso cadastrado com sucesso!", "curso": novo_curso}), 201
+    sql = """
+    INSERT INTO cursos
+    (nome, nivel, vagas_totais)
+    VALUES (%s,%s,%s)
+    """
+
+    cursor.execute(
+        sql,
+        (
+            dados.get('nome'),
+            dados.get('nivel'),
+            dados.get('vagas_totais')
+        )
+    )
+
+    conexao.commit()
+
+    cursor.close()
+    conexao.close()
+
+    return jsonify({
+        "mensagem": "Curso cadastrado com sucesso!"
+    }), 201
 
 
 # ENDPOINTS DE MATRÍCULAS 
 @app.route('/api/matriculas', methods=['GET'])
 def get_matriculas():
+
+    conexao = conectar()
+    cursor = conexao.cursor(dictionary=True)
+
+    cursor.execute("""
+    SELECT
+        m.id_matricula,
+        a.nome AS aluno,
+        c.nome AS curso,
+        m.data_matricula
+    FROM matriculas m
+    JOIN alunos a ON a.id_aluno = m.id_aluno
+    JOIN cursos c ON c.id_curso = m.id_curso
+    """)
+
+    matriculas = cursor.fetchall()
+
+    cursor.close()
+    conexao.close()
+
     return jsonify(matriculas), 200
 
 @app.route('/api/matriculas', methods=['POST'])
 def add_matricula():
+
     dados = request.get_json() or request.form
-    aluno_id = int(dados.get('aluno_id'))
-    curso_id = int(dados.get('curso_id'))
+
+    aluno_id = dados.get('aluno_id')
+    curso_id = dados.get('curso_id')
     data_mat = dados.get('data')
 
+    conexao = conectar()
+    cursor = conexao.cursor(dictionary=True)
 
-    curso_selecionado = next((c for c in cursos if c['id'] == curso_id), None)
-    if not curso_selecionado:
-        return jsonify({"erro": "Curso não encontrado."}), 44
+    cursor.execute(
+        "SELECT * FROM cursos WHERE id_curso = %s",
+        (curso_id,)
+    )
 
-    vagas_disponiveis = curso_selecionado['vagas_totais'] - curso_selecionado['vagas_ocupadas']
-    
-    if vagas_disponiveis <= 0:
- 
-        return jsonify({"erro": "Matrícula recusada: Não há vagas disponíveis neste curso!"}), 400
+    curso = cursor.fetchone()
 
-    curso_selecionado['vagas_ocupadas'] += 1
-    nova_mat = {
-        "id": len(matriculas) + 1,
-        "aluno_id": aluno_id,
-        "curso_id": curso_id,
-        "data": data_mat
-    }
-    matriculas.append(nova_mat)
-    return jsonify({"mensagem": "Matrícula realizada com sucesso!", "matricula": nova_mat}), 201
+    if not curso:
+        return jsonify({
+            "erro": "Curso não encontrado."
+        }), 404
 
+    vagas = (
+        curso['vagas_totais']
+        - curso['vagas_ocupadas']
+    )
+
+    if vagas <= 0:
+        return jsonify({
+            "erro": "Não há vagas."
+        }), 400
+
+    cursor.execute(
+        """
+        INSERT INTO matriculas
+        (id_aluno,id_curso,data_matricula)
+        VALUES (%s,%s,%s)
+        """,
+        (
+            aluno_id,
+            curso_id,
+            data_mat
+        )
+    )
+
+    cursor.execute(
+        """
+        UPDATE cursos
+        SET vagas_ocupadas = vagas_ocupadas + 1
+        WHERE id_curso = %s
+        """,
+        (curso_id,)
+    )
+
+    conexao.commit()
+
+    cursor.close()
+    conexao.close()
+
+    return jsonify({
+        "mensagem": "Matrícula realizada com sucesso!"
+    }), 201
 
 # ENDPOINTS DE ATENDIMENTOS (
 @app.route('/api/atendimentos', methods=['GET'])
 def get_atendimentos():
+
+    conexao = conectar()
+    cursor = conexao.cursor(dictionary=True)
+
+    cursor.execute("""
+    SELECT
+        at.id_atendimento,
+        al.nome AS aluno,
+        at.data,
+        at.horario,
+        at.motivo,
+        at.status
+    FROM atendimentos at
+    JOIN alunos al
+        ON al.id_aluno = at.id_aluno
+    """)
+
+    atendimentos = cursor.fetchall()
+
+    cursor.close()
+    conexao.close()
+
     return jsonify(atendimentos), 200
 
 @app.route('/api/atendimentos', methods=['POST'])
 def add_atendimento():
+
     dados = request.get_json() or request.form
-    aluno = dados.get('aluno')
-    data = dados.get('data')
-    horario = dados.get('horario')
-    motivo = dados.get('motivo')
 
-    if not aluno or not data or not horario or not motivo:
-        return jsonify({"erro": "Preencha todos os campos para o agendamento."}), 400
+    conexao = conectar()
+    cursor = conexao.cursor()
 
-    novo_atendimento = {
-        "id": len(atendimentos) + 1,
-        "aluno": aluno,
-        "data": data,
-        "horario": horario,
-        "motivo": motivo,
-        "status": "Agendado"
-    }
-    atendimentos.append(novo_atendimento)
-    
-    print(f"\n[BACKEND LOG] Novo atendimento de reforço agendado para: {aluno} em {data} às {horario}")
-    return jsonify({"mensagem": "Atendimento agendado com sucesso!", "atendimento": novo_atendimento}), 201
+    cursor.execute(
+        """
+        INSERT INTO atendimentos
+        (id_aluno,data,horario,motivo)
+        VALUES (%s,%s,%s,%s)
+        """,
+        (
+            dados.get('id_aluno'),
+            dados.get('data'),
+            dados.get('horario'),
+            dados.get('motivo')
+        )
+    )
+
+    conexao.commit()
+
+    cursor.close()
+    conexao.close()
+
+    return jsonify({
+        "mensagem": "Atendimento agendado com sucesso!"
+    }), 201
 
 if __name__ == '__main__':
 
