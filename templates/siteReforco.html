@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+
   <link rel="stylesheet" href="/static/reforco.css">
 </head>
 <body>
@@ -73,7 +74,7 @@
         <span>Cursos</span>
       </button>
 
-      <button class="item-menu" data-tela="matriculasNav">
+      <button class="item-menu" data-tela="matriculas">
         <i data-lucide="clipboard-list"></i>
         <span>Matrículas</span>
       </button>
@@ -98,19 +99,19 @@
 
             <div class="card-info">
               <i data-lucide="book-open" size="36"></i>
-              <div id="contadorCursos" class="numero-card">0</div>
+              <div class="numero-card">0</div>
               <div class="texto-card">Total de Cursos</div>
             </div>
 
             <div class="card-info">
               <i data-lucide="clipboard-list" size="36"></i>
-              <div id="contadorMatrículas" class="numero-card">0</div>
+              <div class="numero-card">0</div>
               <div class="texto-card">Matrículas Ativas</div>
             </div>
 
             <div class="card-info">
               <i data-lucide="calendar" size="36"></i>
-              <div id="contadorAtendimentos" class="numero-card">0</div>
+              <div class="numero-card">0</div>
               <div class="texto-card">Atendimentos Agendados</div>
             </div>
           </div>
@@ -128,7 +129,7 @@
               Criar Curso
             </button>
 
-            <button class="botao-azul" data-tela="cadastroMatricula">
+            <button class="botao-azul" data-tela="matriculas">
               <i data-lucide="plus"></i>
               Nova Matrícula
             </button>
@@ -141,7 +142,7 @@
 
           <div class="painel">
             <div class="cabecalho-painel">Próximos atendimentos</div>
-            <div id="listaProximosAtendimentos" class="estado-vazio">Nenhum atendimento agendado.</div>
+            <div class="estado-vazio">Nenhum atendimento agendado.</div>
           </div>
         </section>
 
@@ -169,7 +170,7 @@
           </div>
 
           <div class="card-tabela">
-            <table id="tabelaAlunos">
+            <table>
               <thead>
                 <tr>
                   <th>Nome</th>
@@ -196,12 +197,12 @@
               <div class="grade-formulario">
                 <div>
                   <label>Nome completo <span class="obrigatorio">*</span></label>
-                  <input id="nomeAluno" placeholder="Digite o nome completo" required>
+                  <input id="nomeAluno" placeholder="Digite o nome completo">
                 </div>
 
                 <div>
                   <label>Email <span class="obrigatorio">*</span></label>
-                  <input id="emailAluno" type="email" placeholder="Digite o email" required>
+                  <input id="emailAluno" type="email" placeholder="Digite o email">
                 </div>
 
                 <div>
@@ -212,11 +213,16 @@
                 <div>
                   <label>Nível</label>
                   <select id="nivelAluno">
-                    <option value="">Selecione o nível</option>
-                    <option value="Básico">Básico</option>
-                    <option value="Intermediário">Intermediário</option>
-                    <option value="Avançado">Avançado</option>
+                    <option>Selecione o nível</option>
+                    <option>Básico</option>
+                    <option>Intermediário</option>
+                    <option>Avançado</option>
                   </select>
+                </div>
+
+                <div class="linha-inteira">
+                  <label>Observações</label>
+                  <textarea placeholder="Informações adicionais sobre o aluno"></textarea>
                 </div>
               </div>
 
@@ -252,18 +258,20 @@
           </div>
 
           <div class="card-tabela">
-            <table id="tabelaCursos">
+            <table>
               <thead>
                 <tr>
                   <th>Nome do Curso</th>
                   <th>Nível</th>
                   <th>Vagas Totais</th>
                   <th>Vagas Ocupadas</th>
+                  <th>Status</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="4" class="estado-vazio">Nenhum curso cadastrado.</td>
+                  <td colspan="6" class="estado-vazio">Nenhum curso cadastrado.</td>
                 </tr>
               </tbody>
             </table>
@@ -274,26 +282,36 @@
           <h1>Cadastro de Curso</h1>
 
           <div class="card-formulario">
-            <form id="formCurso" class="formulario-visual">
+            <form class="formulario-visual">
               <div class="grade-formulario">
                 <div>
                   <label>Nome do curso <span class="obrigatorio">*</span></label>
-                  <input id="nomeCurso" placeholder="Ex: Matemática Básica" required>
+                  <input placeholder="Ex: Matemática Básica">
                 </div>
 
                 <div>
                   <label>Nível <span class="obrigatorio">*</span></label>
-                  <select id="nivelCurso" required>
-                    <option value="">Selecione o nível</option>
-                    <option value="Básico">Básico</option>
-                    <option value="Intermediário">Intermediário</option>
-                    <option value="Avançado">Avançado</option>
+                  <select>
+                    <option>Selecione o nível</option>
+                    <option>Básico</option>
+                    <option>Intermediário</option>
+                    <option>Avançado</option>
                   </select>
                 </div>
 
                 <div>
                   <label>Quantidade de vagas <span class="obrigatorio">*</span></label>
-                  <input id="vagasCurso" type="number" placeholder="Ex: 30" required>
+                  <input type="number" placeholder="Ex: 30">
+                </div>
+
+                <div>
+                  <label>Carga horária</label>
+                  <input placeholder="Ex: 40h">
+                </div>
+
+                <div class="linha-inteira">
+                  <label>Descrição do curso</label>
+                  <textarea placeholder="Descreva o conteúdo do curso"></textarea>
                 </div>
               </div>
 
@@ -305,62 +323,47 @@
           </div>
         </section>
 
-        <section id="matriculasNav" class="tela oculto">
-          <h1>Matrículas Realizadas</h1>
-          <p class="subtitulo">Gerencie os vínculos de alunos e cursos</p>
-          <div class="card-filtros">
-            <button class="botao-azul" data-tela="cadastroMatricula">
-              <i data-lucide="plus"></i> Nova Matrícula
-            </button>
-          </div>
-          <div class="card-tabela">
-            <table id="tabelaMatriculas">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Aluno</th>
-                  <th>Curso</th>
-                  <th>Data de Matrícula</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="4" class="estado-vazio">Nenhuma matrícula registrada.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section id="cadastroMatricula" class="tela oculto">
+        <section id="matriculas" class="tela oculto">
           <h1>Nova Matrícula</h1>
           <p class="subtitulo">Vincular aluno a um curso</p>
 
           <div class="card-formulario">
-            <form id="formMatricula" class="formulario-visual">
+            <form class="formulario-visual">
               <div class="grade-formulario">
                 <div>
                   <label>Selecionar Aluno</label>
-                  <select id="selectMatriculaAluno" required>
-                    <option value="">Selecione um aluno</option>
+                  <select>
+                    <option>Selecione um aluno</option>
                   </select>
                 </div>
 
                 <div>
                   <label>Selecionar Curso</label>
-                  <select id="selectMatriculaCurso" required>
-                    <option value="">Selecione um curso</option>
+                  <select>
+                    <option>Selecione um curso</option>
                   </select>
                 </div>
               </div>
 
-              <div style="margin: 15px 0;">
-                <label>Data da Matrícula</label>
-                <input id="dataMatricula" type="date" required>
+              <div class="caixa-vagas">
+                <div class="grade-vagas">
+                  <div>Vagas totais: <strong>0</strong></div>
+                  <div>Vagas ocupadas: <strong>0</strong></div>
+                  <div>Vagas disponíveis: <strong>0</strong></div>
+                </div>
+
+                <div class="barra-progresso" style="width: 100%;">
+                  <span style="width: 0%;"></span>
+                </div>
+
+                <div class="texto-card" style="margin-top: 8px;">0/0 vagas ocupadas</div>
               </div>
 
+              <label>Data da Matrícula</label>
+              <input type="date">
+
               <div class="acoes-formulario">
-                <button type="button" class="botao-contorno" data-tela="matriculasNav">Cancelar</button>
+                <button type="button" class="botao-contorno" data-tela="inicio">Cancelar</button>
                 <button type="submit" class="botao-azul">Matricular</button>
               </div>
             </form>
@@ -372,28 +375,33 @@
           <p class="subtitulo">Registrar atendimento para um aluno</p>
 
           <div class="card-formulario">
-            <form id="formAtendimento" class="formulario-visual">
+            <form class="formulario-visual">
               <div class="grade-formulario">
                 <div>
                   <label>Selecionar Aluno <span class="obrigatorio">*</span></label>
-                  <select id="selectAtendimentoAluno" required>
-                    <option value="">Selecione um aluno</option>
+                  <select>
+                    <option>Selecione um aluno</option>
                   </select>
                 </div>
 
                 <div>
                   <label>Data do Atendimento <span class="obrigatorio">*</span></label>
-                  <input id="dataAtendimento" type="date" required>
+                  <input type="date">
                 </div>
 
                 <div>
                   <label>Horário <span class="obrigatorio">*</span></label>
-                  <input id="horarioAtendimento" type="time" required>
+                  <input type="time">
                 </div>
 
                 <div>
                   <label>Motivo <span class="obrigatorio">*</span></label>
-                  <input id="motivoAtendimento" placeholder="Ex: Dificuldade em matemática" required>
+                  <input placeholder="Ex: Dificuldade em matemática">
+                </div>
+
+                <div class="linha-inteira">
+                  <label>Observações</label>
+                  <textarea placeholder="Detalhes adicionais sobre o atendimento"></textarea>
                 </div>
               </div>
 
@@ -414,24 +422,37 @@
               <i data-lucide="search"></i>
               <input type="text" placeholder="Buscar por nome do aluno">
             </div>
+
+            <input type="date">
+
+            <select>
+              <option>Todos</option>
+              <option>Agendado</option>
+              <option>Realizado</option>
+              <option>Cancelado</option>
+            </select>
+
             <button class="botao-azul" data-tela="cadastroAtendimento">
-              <i data-lucide="plus"></i> Agendar atendimento
+              <i data-lucide="plus"></i>
+              Agendar atendimento
             </button>
           </div>
 
           <div class="card-tabela">
-            <table id="tabelaAtendimentos">
+            <table>
               <thead>
                 <tr>
                   <th>Aluno</th>
                   <th>Data</th>
                   <th>Horário</th>
                   <th>Motivo</th>
+                  <th>Status</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="4" class="estado-vazio">Nenhum atendimento cadastrado.</td>
+                  <td colspan="6" class="estado-vazio">Nenhum atendimento cadastrado.</td>
                 </tr>
               </tbody>
             </table>
@@ -441,14 +462,83 @@
         <section id="perfil" class="tela oculto">
           <h1>Perfil do Administrador</h1>
           <p class="subtitulo">Área do usuário responsável pelo sistema.</p>
+
           <div class="perfil-grid">
             <div class="card-perfil perfil-resumo">
-              <div class="perfil-avatar"><i data-lucide="user" size="54"></i></div>
+              <div class="perfil-avatar">
+                <i data-lucide="user" size="54"></i>
+              </div>
+
               <div class="perfil-nome">Administrador</div>
               <div class="perfil-funcao">Responsável pelo sistema</div>
+
+              <div class="perfil-linha">
+                <i data-lucide="mail"></i>
+                <span>admin@reforco.com</span>
+              </div>
+
+              <div class="perfil-linha">
+                <i data-lucide="shield-check"></i>
+                <span>Acesso administrativo</span>
+              </div>
+
+              <div class="perfil-linha">
+                <i data-lucide="clock"></i>
+                <span>Último acesso: hoje</span>
+              </div>
+
               <button id="botaoSair" class="botao-sair" type="button">
-                <i data-lucide="log-out"></i> Sair da conta
+                <i data-lucide="log-out"></i>
+                Sair da conta
               </button>
+            </div>
+
+            <div class="card-perfil">
+              <form class="formulario-visual">
+                <div class="grade-formulario">
+                  <div>
+                    <label>Nome do administrador</label>
+                    <input placeholder="Administrador">
+                  </div>
+
+                  <div>
+                    <label>Email de acesso</label>
+                    <input type="email" placeholder="admin@reforco.com">
+                  </div>
+
+                  <div>
+                    <label>Cargo/Função</label>
+                    <input placeholder="Responsável pelo sistema">
+                  </div>
+
+                  <div>
+                    <label>Telefone</label>
+                    <input placeholder="(xx) xxxxx-xxxx">
+                  </div>
+                </div>
+
+                <div class="acoes-formulario">
+                  <button type="button" class="botao-contorno" data-tela="inicio">Cancelar</button>
+                  <button type="submit" class="botao-azul">Salvar perfil</button>
+                </div>
+              </form>
+
+              <div class="perfil-estatisticas">
+                <div class="mini-card">
+                  <strong>0</strong>
+                  <span>Alunos</span>
+                </div>
+
+                <div class="mini-card">
+                  <strong>0</strong>
+                  <span>Cursos</span>
+                </div>
+
+                <div class="mini-card">
+                  <strong>0</strong>
+                  <span>Atendimentos</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -456,17 +546,21 @@
     </main>
   </div>
 
-  <div id="mensagem" class="mensagem-flutuante">Ação realizada.</div>
+  <div id="mensagem" class="mensagem-flutuante">Ação visual realizada.</div>
 
   <script>
     const configuracao = {
       telaInicial: 'inicio',
-      duracaoMensagem: 2500,
+      duracaoMensagem: 2200,
       telasComMenuRelacionado: {
         cadastroAluno: 'alunos',
         cadastroCurso: 'cursos',
-        cadastroMatricula: 'matriculasNav',
         cadastroAtendimento: 'atendimentos'
+      },
+      mensagens: {
+        login: 'Login realizado com sucesso.',
+        formulario: 'Informações enviadas com sucesso.',
+        logout: 'Você saiu da conta.'
       }
     };
 
@@ -477,369 +571,276 @@
       telas: document.querySelectorAll('.tela'),
       itensMenu: document.querySelectorAll('.item-menu'),
       mensagem: document.getElementById('mensagem'),
-      botaoSair: document.getElementById('botaoSair')
+      botaoSair: document.getElementById('botaoSair'),
+      formularios: document.querySelectorAll('.formulario-visual')
     };
 
     let temporizadorMensagem = null;
 
-    // GERENCIAMENTO VISUAL DE TELAS
-    function abrirTela(nomeDaTela) {
-      const telaSelecionada = document.getElementById(nomeDaTela);
-      if (!telaSelecionada) return;
+    function removerClasse(elemento, classe) {
+      if (elemento) {
+        elemento.classList.remove(classe);
+      }
+    }
 
-      elementos.telas.forEach(tela => tela.classList.add('oculto'));
-      telaSelecionada.classList.remove('oculto');
+    function adicionarClasse(elemento, classe) {
+      if (elemento) {
+        elemento.classList.add(classe);
+      }
+    }
 
-      // Gerenciar classe ativa do menu lateral
-      elementos.itensMenu.forEach(item => {
-        item.classList.remove('ativo');
-        const destino = item.dataset.tela;
-        const relacionado = configuracao.telasComMenuRelacionado[nomeDaTela];
-        if (destino === nomeDaTela || destino === relacionado) {
-          item.classList.add('ativo');
+    function alternarVisibilidade(elemento, deveMostrar) {
+      if (deveMostrar) {
+        removerClasse(elemento, 'oculto');
+      } else {
+        adicionarClasse(elemento, 'oculto');
+      }
+    }
+
+    function buscarTela(nomeDaTela) {
+      return document.getElementById(nomeDaTela);
+    }
+
+    function limparMenuAtivo() {
+      elementos.itensMenu.forEach(function(itemMenu) {
+        itemMenu.classList.remove('ativo');
+      });
+    }
+
+    function ativarItemMenu(nomeDaTela) {
+      limparMenuAtivo();
+
+      elementos.itensMenu.forEach(function(itemMenu) {
+        const telaDoMenu = itemMenu.dataset.tela;
+        const telaRelacionada = configuracao.telasComMenuRelacionado[nomeDaTela];
+        const deveAtivar = telaDoMenu === nomeDaTela || telaDoMenu === telaRelacionada;
+
+        if (deveAtivar) {
+          itemMenu.classList.add('ativo');
         }
       });
+    }
 
-      if (window.lucide) lucide.createIcons();
-      
-      // Gatilhos de carregamento ao abrir as telas correspondentes
-      if (nomeDaTela === 'alunos') carregarAlunos();
-      if (nomeDaTela === 'cursos') carregarCursos();
-      if (nomeDaTela === 'matriculasNav') carregarMatriculas();
-      if (nomeDaTela === 'atendimentos') carregarAtendimentos();
-      if (nomeDaTela === 'cadastroMatricula' || nomeDaTela === 'cadastroAtendimento') carregarListasParaSelects();
-      if (nomeDaTela === 'inicio') atualizarDashboard();
+    function atualizarIcones() {
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    function rolarParaTopo() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function abrirTela(nomeDaTela) {
+      const telaSelecionada = buscarTela(nomeDaTela);
+
+      if (!telaSelecionada) {
+        return;
+      }
+
+      elementos.telas.forEach(function(tela) {
+        const deveMostrar = tela.id === nomeDaTela;
+        alternarVisibilidade(tela, deveMostrar);
+      });
+
+      ativarItemMenu(nomeDaTela);
+      rolarParaTopo();
+      atualizarIcones();
     }
 
     function mostrarMensagem(texto) {
-      if (!elementos.mensagem) return;
+      if (!elementos.mensagem) {
+        return;
+      }
+
       clearTimeout(temporizadorMensagem);
       elementos.mensagem.textContent = texto;
       elementos.mensagem.style.display = 'block';
-      temporizadorMensagem = setTimeout(() => {
+
+      temporizadorMensagem = setTimeout(function() {
         elementos.mensagem.style.display = 'none';
       }, configuracao.duracaoMensagem);
     }
 
-    // NAVEGAÇÃO DOS BOTÕES COM ATRIBUTO [data-tela]
-    document.addEventListener('click', function(e) {
-      const botao = e.target.closest('[data-tela]');
-      if (botao) abrirTela(botao.dataset.tela);
-    });
-
-    // SISTEMA DE LOGIN / LOGOUT FAKE
-    elementos.formLogin.addEventListener('submit', function(e) {
-      e.preventDefault();
-      elementos.telaLogin.classList.add('oculto');
-      elementos.aplicacao.classList.remove('oculto');
+    function entrarNoSistema() {
+      adicionarClasse(elementos.telaLogin, 'oculto');
+      removerClasse(elementos.aplicacao, 'oculto');
       abrirTela(configuracao.telaInicial);
-      mostrarMensagem('Login realizado com sucesso.');
-    });
-
-    elementos.botaoSair.addEventListener('click', function() {
-      elementos.aplicacao.classList.add('oculto');
-      elementos.telaLogin.classList.remove('oculto');
-      mostrarMensagem('Você saiu do sistema.');
-    });
-
-    // ──────────────────────────────────────────────────────────────────────
-    // REQUISIÇÕES DA API (FETCH)
-    // ──────────────────────────────────────────────────────────────────────
-
-    // 1. GERENCIAR ALUNOS
-    async function carregarAlunos() {
-      try {
-        const res = await fetch('/api/alunos');
-        const alunos = await res.json();
-        const tbody = document.querySelector('#tabelaAlunos tbody');
-        
-        if (!alunos.length) {
-          tbody.innerHTML = `<tr><td colspan="5" class="estado-vazio">Nenhum aluno cadastrado.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = '';
-        alunos.forEach(aluno => {
-          tbody.innerHTML += `
-            <tr>
-              <td>${aluno.nome}</td>
-              <td>${aluno.email}</td>
-              <td>${aluno.telefone || '-'}</td>
-              <td>${aluno.nivel || '-'}</td>
-              <td>
-                <button class="botao-sair" onclick="deletarAluno(${aluno.id_aluno})" style="padding: 4px 8px; font-size: 12px;">Excluir</button>
-              </td>
-            </tr>`;
-        });
-      } catch (err) {
-        console.error('Erro ao buscar alunos:', err);
-      }
+      carregarAlunos();
+      mostrarMensagem(configuracao.mensagens.login);
     }
 
-    document.getElementById('formAluno').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const dados = {
-        nome: document.getElementById('nomeAluno').value,
-        email: document.getElementById('emailAluno').value,
-        telefone: document.getElementById('telefoneAluno').value,
-        nivel: document.getElementById('nivelAluno').value
-      };
-
-      try {
-        const res = await fetch('/api/alunos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dados)
-        });
-        const resultado = await res.json();
-        mostrarMensagem(resultado.mensagem || resultado.erro);
-        if (res.ok) {
-          document.getElementById('formAluno').reset();
-          abrirTela('alunos');
-        }
-      } catch (err) {
-        mostrarMensagem('Erro de conexão com o servidor.');
-      }
-    });
-
-    async function deletarAluno(id) {
-      if (!confirm("Tem certeza que deseja remover este estudante?")) return;
-      try {
-        const res = await fetch(`/api/alunos/${id}`, { method: 'DELETE' });
-        const resultado = await res.json();
-        mostrarMensagem(resultado.mensagem || resultado.erro);
-        carregarAlunos();
-      } catch (err) {
-        mostrarMensagem('Não foi possível deletar o aluno.');
-      }
+    function sairDoSistema() {
+      adicionarClasse(elementos.aplicacao, 'oculto');
+      removerClasse(elementos.telaLogin, 'oculto');
+      mostrarMensagem(configuracao.mensagens.logout);
     }
 
-    // 2. GERENCIAR CURSOS
-    async function carregarCursos() {
-      try {
-        const res = await fetch('/api/cursos');
-        const cursos = await res.json();
-        const tbody = document.querySelector('#tabelaCursos tbody');
-
-        if (!cursos.length) {
-          tbody.innerHTML = `<tr><td colspan="4" class="estado-vazio">Nenhum curso cadastrado.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = '';
-        cursos.forEach(curso => {
-          tbody.innerHTML += `
-            <tr>
-              <td><strong>${curso.nome}</strong></td>
-              <td>${curso.nivel}</td>
-              <td>${curso.vagas_totais}</td>
-              <td>${curso.vagas_ocupadas || 0}</td>
-            </tr>`;
-        });
-      } catch (err) {
-        console.error(err);
+    function limparCamposDoFormulario(formulario) {
+      if (!formulario) {
+        return;
       }
-    }
 
-    document.getElementById('formCurso').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const dados = {
-        nome: document.getElementById('nomeCurso').value,
-        nivel: document.getElementById('nivelCurso').value,
-        vagas_totais: parseInt(document.getElementById('vagasCurso').value)
-      };
+      const campos = formulario.querySelectorAll('input, textarea, select');
 
-      try {
-        const res = await fetch('/api/cursos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dados)
-        });
-        const resultado = await res.json();
-        mostrarMensagem(resultado.mensagem || resultado.erro);
-        if (res.ok) {
-          document.getElementById('formCurso').reset();
-          abrirTela('cursos');
-        }
-      } catch (err) {
-        mostrarMensagem('Erro ao cadastrar curso.');
-      }
-    });
-
-    // 3. GERENCIAR MATRÍCULAS
-    async function carregarMatriculas() {
-      try {
-        const res = await fetch('/api/matriculas');
-        const matriculas = await res.json();
-        const tbody = document.querySelector('#tabelaMatriculas tbody');
-
-        if (!matriculas.length) {
-          tbody.innerHTML = `<tr><td colspan="4" class="estado-vazio">Nenhuma matrícula registrada.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = '';
-        matriculas.forEach(mat => {
-          tbody.innerHTML += `
-            <tr>
-              <td>#${mat.id_matricula}</td>
-              <td>${mat.aluno}</td>
-              <td>${mat.curso}</td>
-              <td>${new Date(mat.data_matricula).toLocaleDateString('pt-BR')}</td>
-            </tr>`;
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    document.getElementById('formMatricula').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const dados = {
-        aluno_id: document.getElementById('selectMatriculaAluno').value,
-        curso_id: document.getElementById('selectMatriculaCurso').value,
-        data: document.getElementById('dataMatricula').value
-      };
-
-      try {
-        const res = await fetch('/api/matriculas', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dados)
-        });
-        const resultado = await res.json();
-        mostrarMensagem(resultado.mensagem || resultado.erro);
-        if (res.ok) {
-          document.getElementById('formMatricula').reset();
-          abrirTela('matriculasNav');
-        }
-      } catch (err) {
-        mostrarMensagem('Falha ao processar matrícula.');
-      }
-    });
-
-    // 4. GERENCIAR ATENDIMENTOS
-    async function carregarAtendimentos() {
-      try {
-        const res = await fetch('/api/atendimentos');
-        const atendimentos = await res.json();
-        const tbody = document.querySelector('#tabelaAtendimentos tbody');
-
-        if (!atendimentos.length) {
-          tbody.innerHTML = `<tr><td colspan="4" class="estado-vazio">Nenhum atendimento cadastrado.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = '';
-        atendimentos.forEach(at => {
-          tbody.innerHTML += `
-            <tr>
-              <td>${at.aluno}</td>
-              <td>${new Date(at.data).toLocaleDateString('pt-BR')}</td>
-              <td>${at.horario}</td>
-              <td>${at.motivo}</td>
-            </tr>`;
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    document.getElementById('formAtendimento').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const dados = {
-        id_aluno: document.getElementById('selectAtendimentoAluno').value,
-        data: document.getElementById('dataAtendimento').value,
-        horario: document.getElementById('horarioAtendimento').value,
-        motivo: document.getElementById('motivoAtendimento').value
-      };
-
-      try {
-        const res = await fetch('/api/atendimentos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dados)
-        });
-        const resultado = await res.json();
-        mostrarMensagem(resultado.mensagem || resultado.erro);
-        if (res.ok) {
-          document.getElementById('formAtendimento').reset();
-          abrirTela('atendimentos');
-        }
-      } catch (err) {
-        mostrarMensagem('Erro ao agendar atendimento.');
-      }
-    });
-
-    // AUXILIAR: ALIMENTAR OS SELECTS DE FORMULÁRIOS DINAMICAMENTE
-    async function carregarListasParaSelects() {
-      try {
-        const [resAlunos, resCursos] = await Promise.all([fetch('/api/alunos'), fetch('/api/cursos')]);
-        const alunos = await resAlunos.json();
-        const cursos = await resCursos.json();
-
-        const selectMatAluno = document.getElementById('selectMatriculaAluno');
-        const selectMatCurso = document.getElementById('selectMatriculaCurso');
-        const selectAtendAluno = document.getElementById('selectAtendimentoAluno');
-
-        // Reset
-        selectMatAluno.innerHTML = '<option value="">Selecione um aluno</option>';
-        selectAtendAluno.innerHTML = '<option value="">Selecione um aluno</option>';
-        selectMatCurso.innerHTML = '<option value="">Selecione um curso</option>';
-
-        alunos.forEach(a => {
-          const opt = `<option value="${a.id_aluno}">${a.nome}</option>`;
-          selectMatAluno.innerHTML += opt;
-          selectAtendAluno.innerHTML += opt;
-        });
-
-        cursos.forEach(c => {
-          selectMatCurso.innerHTML += `<option value="${c.id_curso}">${c.nome} (${c.vagas_totais - (c.vagas_ocupadas || 0)} vagas restando)</option>`;
-        });
-      } catch (err) {
-        console.log('Erro ao preencher seletores:', err);
-      }
-    }
-
-    // 5. ATUALIZAR CONTAGENS DO DASHBOARD (HOME)
-    async function atualizarDashboard() {
-      try {
-        const [rAlunos, rCursos, rMatriculas, rAtendimentos] = await Promise.all([
-          fetch('/api/alunos'), fetch('/api/cursos'), fetch('/api/matriculas'), fetch('/api/atendimentos')
-        ]);
-
-        const alunos = await rAlunos.json();
-        const cursos = await rCursos.json();
-        const matriculas = await rMatriculas.json();
-        const atendimentos = await rAtendimentos.json();
-
-        document.getElementById('contadorAlunos').textContent = alunos.length || 0;
-        document.getElementById('contadorCursos').textContent = cursos.length || 0;
-        document.getElementById('contadorMatrículas').textContent = matriculas.length || 0;
-        document.getElementById('contadorAtendimentos').textContent = atendimentos.length || 0;
-
-        // Atualizar painel rápido de "próximos atendimentos" na Home
-        const painelAtend = document.getElementById('listaProximosAtendimentos');
-        if (atendimentos.length > 0) {
-          painelAtend.className = ""; // remove classe estado-vazio
-          painelAtend.innerHTML = '<ul style="list-style: none; padding: 10px;">' + 
-            atendimentos.slice(0, 3).map(at => `
-              <li style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-                <strong>${at.aluno}</strong> - ${at.motivo} (${at.horario} em ${new Date(at.data).toLocaleDateString('pt-BR')})
-              </li>
-            `).join('') + '</ul>';
+      campos.forEach(function(campo) {
+        if (campo.tagName === 'SELECT') {
+          campo.selectedIndex = 0;
         } else {
-          painelAtend.className = "estado-vazio";
-          painelAtend.textContent = "Nenhum atendimento agendado.";
+          campo.value = '';
         }
-
-      } catch (err) {
-        console.error('Erro ao atualizar painel principal:', err);
-      }
+      });
     }
 
-    // Inicialização da interface Lucide Icons
-    if (window.lucide) lucide.createIcons();
+    function configurarLogin() {
+      elementos.formLogin.addEventListener('submit', function(evento) {
+        evento.preventDefault();
+        entrarNoSistema();
+      });
+    }
+
+    function configurarNavegacao() {
+      document.addEventListener('click', function(evento) {
+        const botaoNavegacao = evento.target.closest('[data-tela]');
+
+        if (!botaoNavegacao) {
+          return;
+        }
+
+        const telaDestino = botaoNavegacao.dataset.tela;
+        abrirTela(telaDestino);
+      });
+    }
+
+    function configurarFormularios() {
+
+  elementos.formularios.forEach(function(formulario) {
+    if (formulario.id === 'formAluno') {
+      return;
+    }
+    formulario.addEventListener('submit', function(evento) {
+      evento.preventDefault();
+      mostrarMensagem(configuracao.mensagens.formulario);
+    });
+  });
+}
+
+    function configurarBotoesDeCancelar() {
+      document.addEventListener('click', function(evento) {
+        const botaoCancelar = evento.target.closest('.botao-cinza, .botao-contorno');
+
+        if (!botaoCancelar) {
+          return;
+        }
+
+        const formulario = botaoCancelar.closest('form');
+        limparCamposDoFormulario(formulario);
+      });
+    }
+
+    function configurarLogout() {
+      elementos.botaoSair.addEventListener('click', function() {
+        sairDoSistema();
+      });
+    }
+
+    function iniciarAplicacao() {
+      configurarLogin();
+      configurarNavegacao();
+      configurarFormularios();
+      configurarBotoesDeCancelar();
+      configurarLogout();
+      atualizarIcones();
+    }
+
+    const formAluno = document.getElementById('formAluno');
+
+formAluno.addEventListener('submit', async function(evento) {
+
+  evento.preventDefault();
+
+  const dados = {
+    nome: document.getElementById('nomeAluno').value,
+    email: document.getElementById('emailAluno').value,
+    telefone: document.getElementById('telefoneAluno').value,
+    nivel: document.getElementById('nivelAluno').value
+  };
+
+  try {
+
+    const resposta = await fetch('/api/alunos', {
+
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify(dados)
+
+    });
+
+    const resultado = await resposta.json();
+
+    mostrarMensagem(resultado.mensagem);
+
+    await carregarAlunos();
+
+    formAluno.reset();
+
+  } catch (erro) {
+
+    mostrarMensagem('Erro ao cadastrar aluno.');
+
+    console.error(erro);
+
+  }
+
+});
+
+  async function carregarAlunos() {
+
+  const resposta = await fetch('/api/alunos');
+  const alunos = await resposta.json();
+
+  const tbody = document.querySelector('#alunos tbody');
+
+  if (alunos.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="estado-vazio">
+          Nenhum aluno cadastrado.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = '';
+
+  alunos.forEach(aluno => {
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${aluno.nome}</td>
+        <td>${aluno.email}</td>
+        <td>${aluno.telefone}</td>
+        <td>${aluno.nivel}</td>
+        <td>-</td>
+      </tr>
+    `;
+
+  });
+
+  document.getElementById('contadorAlunos').textContent =
+  alunos.length;
+
+}
+
+    iniciarAplicacao();
   </script>
 </body>
 </html>
