@@ -152,8 +152,7 @@
 
           <div class="card-filtros">
             <div class="campo-busca">
-              <i data-lucide="search"></i>
-              <input type="text" placeholder="Buscar aluno por nome">
+              <input type="search" placeholder="Buscar aluno por nome">
             </div>
 
             <select>
@@ -240,8 +239,7 @@
 
           <div class="card-filtros">
             <div class="campo-busca">
-              <i data-lucide="search"></i>
-              <input type="text" placeholder="Buscar curso por nome">
+              <input type="search" placeholder="Buscar curso por nome">
             </div>
 
             <select>
@@ -328,22 +326,27 @@
           <p class="subtitulo">Vincular aluno a um curso</p>
 
           <div class="card-formulario">
-            <form class="formulario-visual">
-              <div class="grade-formulario">
-                <div>
-                  <label>Selecionar Aluno</label>
-                  <select>
-                    <option>Selecione um aluno</option>
-                  </select>
+            <form id="formMatricula" class="formulario-visual">
+            <div class="grade-formulario">
+              
+              <div class="seletor-pesquisavel">
+                <label>Selecionar Aluno <span class="obrigatorio">*</span></label>
+                <div class="campo-busca">
+                  <input type="text" id="buscaAluno" placeholder="Digite o nome do aluno..." autocomplete="off" required>
                 </div>
-
-                <div>
-                  <label>Selecionar Curso</label>
-                  <select>
-                    <option>Selecione um curso</option>
-                  </select>
-                </div>
+                <input type="hidden" id="idAlunoSelecionado">
+                <div id="listaSugestoesAluno" class="lista-sugestoes oculto"></div>
               </div>
+
+              <div class="seletor-pesquisavel">
+                <label>Selecionar Curso <span class="obrigatorio">*</span></label>
+                <div class="campo-busca">
+                  <input type="text" id="buscaCurso" placeholder="Digite o nome do curso..." autocomplete="off" required>
+                </div>
+                <input type="hidden" id="idCursoSelecionado">
+                <div id="listaSugestoesCurso" class="lista-sugestoes oculto"></div>
+              </div>
+            </div>
 
               <div class="caixa-vagas">
                 <div class="grade-vagas">
@@ -360,7 +363,7 @@
               </div>
 
               <label>Data da Matrícula</label>
-              <input type="date">
+              <input type="date" id="dataMatricula">
 
               <div class="acoes-formulario">
                 <button type="button" class="botao-contorno" data-tela="inicio">Cancelar</button>
@@ -419,8 +422,7 @@
 
           <div class="card-filtros card-filtros-atendimento">
             <div class="campo-busca">
-              <i data-lucide="search"></i>
-              <input type="text" placeholder="Buscar por nome do aluno">
+              <input type="search" placeholder="Buscar por nome do aluno">
             </div>
 
             <input type="date">
@@ -717,8 +719,8 @@
 
     function configurarFormularios() {
       elementos.formularios.forEach(function(formulario) {
-        // Ignora o formAluno pois ele terá um evento específico para a API
-        if (formulario.id === 'formAluno') {
+        // Ignora os formulários que possuem regras e conexões próprias com a API
+        if (formulario.id === 'formAluno' || formulario.id === 'formMatricula') {
           return;
         }
         formulario.addEventListener('submit', function(evento) {
@@ -832,13 +834,130 @@
       }
     }
 
-    function iniciarAplicacao() {
+    
+        // --- LÓGICA DE BUSCA E AUTOCOMPLETAR (MATRÍCULAS) ---
+
+    let dadosAlunos = [];
+    let dadosCursos = [];
+
+    // Busca as listas brutas da API para alimentar os campos de pesquisa
+    async function carregarDadosParaBusca() {
+      try {
+        const [resAlunos, resCursos] = await Promise.all([
+          fetch('/api/alunos'),
+          fetch('/api/cursos') // Certifique-se de ter essa rota no Flask
+        ]);
+        dadosAlunos = await resAlunos.json();
+        dadosCursos = await resCursos.json();
+      } catch (erro) {
+        console.error("Erro ao carregar dados de busca para matrícula:", erro);
+      }
+    }
+
+    function configurarCampoPesquisa(idInput, idHidden, idLista, listaDados, propriedadeFiltro) {
+      const inputBusca = document.getElementById(idInput);
+      const inputHidden = document.getElementById(idHidden);
+      const containerLista = document.getElementById(idLista);
+
+      inputBusca.addEventListener('input', function() {
+        const termo = this.value.toLowerCase().trim();
+        containerLista.innerHTML = '';
+
+        if (!termo) {
+          containerLista.classList.add('oculto');
+          inputHidden.value = '';
+          return;
+        }
+
+        const filtrados = listaDados.filter(item => 
+          String(item[propriedadeFiltro]).toLowerCase().includes(termo)
+        );
+
+        if (filtrados.length === 0) {
+          containerLista.innerHTML = '<div class="sem-resultados">Nenhum resultado encontrado</div>';
+        } else {
+          filtrados.forEach(item => {
+            const divItem = document.createElement('div');
+            divItem.className = 'item-sugestao';
+            divItem.textContent = item[propriedadeFiltro];
+
+            divItem.addEventListener('click', function() {
+              inputBusca.value = item[propriedadeFiltro];
+              // Mapeamento automático de chaves id vindas do seu banco (ex: id, id_aluno, etc)
+              inputHidden.value = item.id || item.id_aluno || item.id_curso;
+              containerLista.classList.add('oculto');
+            });
+
+            containerLista.appendChild(divItem);
+          });
+        }
+        containerLista.classList.remove('oculto');
+      });
+
+      // Fecha a lista suspensa se o usuário clicar fora do campo
+      document.addEventListener('click', function(e) {
+        if (!inputBusca.contains(e.target) && !containerLista.contains(e.target)) {
+          containerLista.classList.add('oculto');
+        }
+      });
+    }
+
+    // Envio do formulário de matrícula para a API
+    const formMatricula = document.getElementById('formMatricula');
+    formMatricula.addEventListener('submit', async function(evento) {
+      evento.preventDefault();
+
+      const idAluno = document.getElementById('idAlunoSelecionado').value;
+      const idCurso = document.getElementById('idCursoSelecionado').value;
+      const dataMatricula = document.getElementById('dataMatricula').value;
+
+      if (!idAluno || !idCurso) {
+        mostrarMensagem('Por favor, selecione opções válidas diretamente nas listas!');
+        return;
+      }
+
+      const dadosMatricula = {
+        aluno_id: idAluno,
+        curso_id: idCurso,
+        data: dataMatricula
+      };
+
+      try {
+        const resposta = await fetch('/api/matriculas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dadosMatricula)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.ok) {
+          mostrarMensagem('Matrícula realizada com sucesso!');
+          formMatricula.reset();
+          document.getElementById('idAlunoSelecionado').value = '';
+          document.getElementById('idCursoSelecionado').value = '';
+          abrirTela('inicio'); 
+        } else {
+          mostrarMensagem(resultado.erro || 'Erro ao realizar matrícula.');
+        }
+      } catch (erro) {
+        mostrarMensagem('Erro de conexão ao salvar matrícula.');
+        console.error(erro);
+      }
+    });
+
+   async function iniciarAplicacao() {
       configurarLogin();
       configurarNavegacao();
       configurarFormularios();
       configurarBotoesDeCancelar();
       configurarLogout();
       atualizarIcones();
+
+      // Inicializa os dados e os listeners dos campos de busca inteligente
+      await carregarDadosParaBusca();
+      configurarCampoPesquisa('buscaAluno', 'idAlunoSelecionado', 'listaSugestoesAluno', dadosAlunos, 'nome');
+      configurarCampoPesquisa('buscaCurso', 'idCursoSelecionado', 'listaSugestoesCurso', dadosCursos, 'nome');
     }
 
     iniciarAplicacao();

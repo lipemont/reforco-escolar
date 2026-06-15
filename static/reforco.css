@@ -1,3 +1,30 @@
+/* ==========================================================================
+   VARIÁVEIS DE CORES (Facilita manutenção e personalização)
+   ========================================================================== */
+:root {
+  --primary-dark: #23418f;
+  --primary: #2d64e3;
+  --primary-light: #2f6eed;
+  --accent: #2f6be9;
+  --accent-hover: #265bd4;
+  
+  --bg-main: #f5f7fb;
+  --bg-card: #ffffff;
+  --bg-gray-light: #f3f4f6;
+  --bg-gray-hover: #e5e7eb;
+  
+  --text-main: #1f2937;
+  --text-muted: #566171;
+  --text-label: #344051;
+  
+  --border-color: #e5e7eb;
+  --border-input: #d1d5db;
+  
+  --danger: #be123c;
+  --danger-bg: #fff1f2;
+  --danger-border: #fecaca;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -5,8 +32,8 @@
 body {
   margin: 0;
   font-family: Inter, Arial, sans-serif;
-  background: #f5f7fb;
-  color: #1f2937;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
 button,
@@ -20,9 +47,12 @@ textarea {
   display: none !important;
 }
 
+/* ==========================================================================
+   TELA DE LOGIN
+   ========================================================================== */
 .tela-login {
   min-height: 100vh;
-  background: linear-gradient(135deg, #23418f, #2d64e3);
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,14 +61,14 @@ textarea {
 
 .card-login {
   width: min(100%, 460px);
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(15, 23, 42, .28);
 }
 
 .topo-login {
-  background: #23418f;
+  background: var(--primary-dark);
   color: #ffffff;
   padding: 30px 34px;
   display: flex;
@@ -65,7 +95,7 @@ textarea {
 
 .conteudo-login p {
   margin: 0 0 28px;
-  color: #566171;
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
@@ -77,19 +107,22 @@ textarea {
   margin-top: 18px;
   padding: 14px;
   border-radius: 10px;
-  background: #f3f4f6;
+  background: var(--bg-gray-light);
   color: #4b5563;
   font-size: 14px;
   line-height: 1.5;
 }
 
+/* ==========================================================================
+   ESTRUTURA E LAYOUT PRINCIPAL
+   ========================================================================== */
 .aplicacao {
   min-height: 100vh;
 }
 
 .topbar {
   height: 78px;
-  background: #23418f;
+  background: var(--primary-dark);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -133,7 +166,7 @@ textarea {
 
 .menu-lateral {
   width: 320px;
-  background: linear-gradient(180deg, #2d64e3, #2f6eed);
+  background: linear-gradient(180deg, var(--primary), var(--primary-light));
   position: fixed;
   top: 78px;
   left: 0;
@@ -157,7 +190,7 @@ textarea {
   cursor: pointer;
   margin-bottom: 10px;
   text-align: left;
-  transition: .2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .item-menu:hover,
@@ -185,10 +218,13 @@ h1 {
 
 .subtitulo {
   margin: 0 0 28px;
-  color: #566171;
+  color: var(--text-muted);
   font-size: 18px;
 }
 
+/* ==========================================================================
+   CARDS DE INFORMAÇÃO / DASHBOARD
+   ========================================================================== */
 .grade-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -197,8 +233,8 @@ h1 {
 }
 
 .card-info {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   box-shadow: 0 2px 8px rgba(15, 23, 42, .10);
   border-radius: 12px;
   padding: 30px 32px;
@@ -210,7 +246,7 @@ h1 {
 }
 
 .card-info i {
-  color: #2f6be9;
+  color: var(--accent);
 }
 
 .numero-card {
@@ -221,7 +257,7 @@ h1 {
 }
 
 .texto-card {
-  color: #566171;
+  color: var(--text-muted);
   font-size: 17px;
   line-height: 1.45;
 }
@@ -239,6 +275,9 @@ h1 {
   margin-bottom: 40px;
 }
 
+/* ==========================================================================
+   BOTÕES E COMPONENTES DE INTERAÇÃO
+   ========================================================================== */
 .botao-azul,
 .botao-cinza,
 .botao-contorno,
@@ -253,50 +292,83 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  transition: .2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
 .botao-azul {
-  background: #2f6be9;
+  background: var(--accent);
   color: #ffffff;
   box-shadow: 0 4px 8px rgba(37, 99, 235, .26);
 }
 
 .botao-azul:hover {
-  background: #265bd4;
+  background: var(--accent-hover);
   transform: translateY(-1px);
 }
 
+.botao-azul:active {
+  transform: translateY(0);
+}
+
 .botao-cinza {
-  background: #e5e7eb;
+  background: var(--border-color);
   color: #243041;
   padding: 0 28px;
 }
 
+.botao-cinza:hover {
+  background: #d1d5db;
+}
+
+.botao-cinza:active {
+  background: #9aa3af;
+}
+
 .botao-contorno {
-  border: 1px solid #d1d5db;
-  background: #ffffff;
+  border: 1px solid var(--border-input);
+  background: var(--bg-card);
   color: #243041;
   padding: 0 28px;
   font-size: 16px;
+}
+
+.botao-contorno:hover {
+  background: var(--bg-gray-light);
+  border-color: #9aa3af;
+}
+
+.botao-contorno:active {
+  background: var(--border-color);
 }
 
 .botao-sair {
   width: 100%;
   margin-top: 22px;
-  background: #fff1f2;
-  color: #be123c;
-  border: 1px solid #fecaca;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger-border);
   font-size: 16px;
 }
 
+.botao-sair:hover {
+  background: #ffe4e6;
+  border-color: #fca5a5;
+}
+
+.botao-sair:active {
+  background: #fecaca;
+}
+
+/* ==========================================================================
+   PAINEIS, FORMULÁRIOS E FILTROS
+   ========================================================================== */
 .painel,
 .card-formulario,
 .card-filtros,
 .card-tabela,
 .card-perfil {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   box-shadow: 0 2px 8px rgba(15, 23, 42, .10);
   border-radius: 12px;
 }
@@ -305,7 +377,7 @@ h1 {
   padding: 24px 30px;
   font-size: 23px;
   font-weight: 700;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .estado-vazio {
@@ -333,7 +405,7 @@ label {
   display: block;
   font-weight: 700;
   margin-bottom: 10px;
-  color: #344051;
+  color: var(--text-label);
 }
 
 .obrigatorio {
@@ -345,11 +417,11 @@ select,
 textarea {
   width: 100%;
   min-height: 55px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-input);
   border-radius: 11px;
   padding: 0 20px;
   font-size: 18px;
-  background: #ffffff;
+  background: var(--bg-card);
   outline: none;
 }
 
@@ -362,7 +434,7 @@ textarea {
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #2f6be9;
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(47, 107, 233, .14);
 }
 
@@ -402,6 +474,9 @@ textarea:focus {
   padding-left: 52px;
 }
 
+/* ==========================================================================
+   TABELAS DE DADOS
+   ========================================================================== */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -413,14 +488,14 @@ th {
   padding: 18px 30px;
   color: #374151;
   background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   font-size: 17px;
 }
 
 td {
   padding: 22px 30px;
-  border-bottom: 1px solid #e5e7eb;
-  color: #344051;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-label);
   vertical-align: middle;
 }
 
@@ -428,6 +503,7 @@ tr:last-child td {
   border-bottom: 0;
 }
 
+/* BADGES / ETIQUETAS STATUS */
 .etiqueta {
   display: inline-flex;
   align-items: center;
@@ -487,7 +563,7 @@ tr:last-child td {
   width: 112px;
   height: 10px;
   border-radius: 999px;
-  background: #e5e7eb;
+  background: var(--border-color);
   overflow: hidden;
   margin-top: 7px;
 }
@@ -495,13 +571,13 @@ tr:last-child td {
 .barra-progresso span {
   display: block;
   height: 100%;
-  background: #2f6be9;
+  background: var(--accent);
   border-radius: 999px;
 }
 
 .caixa-vagas {
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  background: var(--bg-gray-light);
+  border: 1px solid var(--border-input);
   border-radius: 11px;
   padding: 22px;
   margin: 20px 0 28px;
@@ -514,6 +590,9 @@ tr:last-child td {
   margin-bottom: 20px;
 }
 
+/* ==========================================================================
+   PERFIL DE USUÁRIO
+   ========================================================================== */
 .perfil-grid {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -532,7 +611,7 @@ tr:last-child td {
   width: 112px;
   height: 112px;
   border-radius: 999px;
-  background: #23418f;
+  background: var(--primary-dark);
   color: #ffffff;
   display: grid;
   place-items: center;
@@ -547,7 +626,7 @@ tr:last-child td {
 }
 
 .perfil-funcao {
-  color: #566171;
+  color: var(--text-muted);
   margin-bottom: 22px;
 }
 
@@ -556,8 +635,8 @@ tr:last-child td {
   align-items: center;
   gap: 12px;
   padding: 14px 0;
-  border-bottom: 1px solid #e5e7eb;
-  color: #344051;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-label);
 }
 
 .perfil-linha:last-child {
@@ -565,7 +644,7 @@ tr:last-child td {
 }
 
 .perfil-linha i {
-  color: #2f6be9;
+  color: var(--accent);
 }
 
 .perfil-estatisticas {
@@ -577,7 +656,7 @@ tr:last-child td {
 
 .mini-card {
   background: #f8fafc;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 18px;
 }
@@ -590,10 +669,13 @@ tr:last-child td {
 }
 
 .mini-card span {
-  color: #566171;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
+/* ==========================================================================
+   FEEDBACK DE ALERTAS E NOTIFICAÇÕES
+   ========================================================================== */
 .aviso-front {
   background: #eef2ff;
   border: 1px solid #c7d2fe;
@@ -617,6 +699,9 @@ tr:last-child td {
   z-index: 30;
 }
 
+/* ==========================================================================
+   MEDIA QUERIES (Responsividade)
+   ========================================================================== */
 @media (max-width: 1100px) {
   .grade-cards,
   .grade-acoes {
@@ -688,3 +773,42 @@ tr:last-child td {
     white-space: nowrap;
   }
 }
+
+/* ==========================================================================
+   ESTILIZAÇÕES ESPECÍFICAS PARA O SITE DE REFORÇO ESCOLAR
+   ========================================================================== */
+
+   .seletor-pesquisavel {
+      position: relative;
+    }
+    .lista-sugestoes {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 11px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 50;
+      margin-top: 6px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    .item-sugestao {
+      padding: 12px 16px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #344051;
+      transition: background-color 0.15s ease;
+    }
+    .item-sugestao:hover {
+      background-color: #f3f4f6;
+    }
+    .sem-resultados {
+      padding: 12px 16px;
+      color: #566171;
+      font-size: 15px;
+      font-style: italic;
+      text-align: center;
+    }
