@@ -14,12 +14,16 @@ CORS(app)
 # Conexão com o banco
 # ──────────────────────────────────────────
 def conectar():
+    port_env = os.getenv('MYSQLPORT')
+    # Evita quebrar com int(None) se a variável não estiver configurada
+    port = int(port_env) if port_env else 3306
+    
     return mysql.connector.connect(
         host=os.getenv('MYSQLHOST'),
         user=os.getenv('MYSQLUSER'),
         password=os.getenv('MYSQLPASSWORD'),
         database=os.getenv('MYSQL_DATABASE'),
-        port=int(os.getenv('MYSQLPORT')),
+        port=port,
         autocommit=False  # commit manual para controle transacional
     )
 
@@ -38,6 +42,8 @@ def index():
 
 @app.route('/api/alunos', methods=['GET'])
 def get_alunos():
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -47,12 +53,16 @@ def get_alunos():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/alunos/<int:id_aluno>', methods=['GET'])
 def get_aluno(id_aluno):
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -64,8 +74,10 @@ def get_aluno(id_aluno):
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/alunos', methods=['POST'])
@@ -82,6 +94,8 @@ def add_aluno():
     if not email:
         return jsonify({"erro": "Email é obrigatório"}), 400
 
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -92,11 +106,14 @@ def add_aluno():
         conexao.commit()
         return jsonify({"mensagem": "Aluno cadastrado com sucesso!"}), 201
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/alunos/<int:id_aluno>', methods=['PUT'])
@@ -113,6 +130,8 @@ def update_aluno(id_aluno):
     if not email:
         return jsonify({"erro": "Email é obrigatório"}), 400
 
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -127,15 +146,20 @@ def update_aluno(id_aluno):
         conexao.commit()
         return jsonify({"mensagem": "Aluno atualizado com sucesso!"}), 200
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/alunos/<int:id_aluno>', methods=['DELETE'])
 def delete_aluno(id_aluno):
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -145,11 +169,14 @@ def delete_aluno(id_aluno):
         conexao.commit()
         return jsonify({"mensagem": "Aluno removido com sucesso!"}), 200
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 # ══════════════════════════════════════════
@@ -158,6 +185,8 @@ def delete_aluno(id_aluno):
 
 @app.route('/api/cursos', methods=['GET'])
 def get_cursos():
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -167,12 +196,16 @@ def get_cursos():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/cursos/<int:id_curso>', methods=['GET'])
 def get_curso(id_curso):
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -184,8 +217,10 @@ def get_curso(id_curso):
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/cursos', methods=['POST'])
@@ -199,6 +234,8 @@ def add_curso():
     if not dados.get('vagas_totais'):
         return jsonify({"erro": "Quantidade de vagas é obrigatória"}), 400
 
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -209,11 +246,14 @@ def add_curso():
         conexao.commit()
         return jsonify({"mensagem": "Curso cadastrado com sucesso!"}), 201
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/cursos/<int:id_curso>', methods=['PUT'])
@@ -227,6 +267,8 @@ def update_curso(id_curso):
     if not dados.get('vagas_totais'):
         return jsonify({"erro": "Quantidade de vagas é obrigatória"}), 400
 
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -239,17 +281,22 @@ def update_curso(id_curso):
         if cursor.rowcount == 0:
             return jsonify({"erro": "Curso não encontrado"}), 404
         conexao.commit()
-        return jsonify({"mensagem": "Curso atualizado com sucesso!"}), 200
+        return jsonify({"mensagem": "Curso updated com sucesso!"}), 200
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/cursos/<int:id_curso>', methods=['DELETE'])
 def delete_curso(id_curso):
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -259,11 +306,14 @@ def delete_curso(id_curso):
         conexao.commit()
         return jsonify({"mensagem": "Curso removido com sucesso!"}), 200
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 # ══════════════════════════════════════════
@@ -272,6 +322,8 @@ def delete_curso(id_curso):
 
 @app.route('/api/matriculas', methods=['GET'])
 def get_matriculas():
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -290,8 +342,10 @@ def get_matriculas():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/matriculas', methods=['POST'])
@@ -307,6 +361,9 @@ def add_matricula():
     if not curso_id:
         return jsonify({"erro": "Curso é obrigatório"}), 400
 
+    conexao = None
+    cursor = None
+    cursor2 = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -343,15 +400,23 @@ def add_matricula():
         conexao.commit()
         return jsonify({"mensagem": "Matrícula realizada com sucesso!"}), 201
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if cursor2:
+            cursor2.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/matriculas/<int:id_matricula>', methods=['DELETE'])
 def delete_matricula(id_matricula):
+    conexao = None
+    cursor = None
+    cursor2 = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -371,11 +436,16 @@ def delete_matricula(id_matricula):
         conexao.commit()
         return jsonify({"mensagem": "Matrícula cancelada com sucesso!"}), 200
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if cursor2:
+            cursor2.close()
+        if conexao:
+            conexao.close()
 
 
 # ══════════════════════════════════════════
@@ -384,6 +454,8 @@ def delete_matricula(id_matricula):
 
 @app.route('/api/atendimentos', methods=['GET'])
 def get_atendimentos():
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor(dictionary=True)
@@ -403,8 +475,10 @@ def get_atendimentos():
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/atendimentos', methods=['POST'])
@@ -420,6 +494,8 @@ def add_atendimento():
     if not dados.get('horario'):
         return jsonify({"erro": "Horário é obrigatório"}), 400
 
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -430,11 +506,14 @@ def add_atendimento():
         conexao.commit()
         return jsonify({"mensagem": "Atendimento agendado com sucesso!"}), 201
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/atendimentos/<int:id_atendimento>/status', methods=['PATCH'])
@@ -448,6 +527,8 @@ def update_status_atendimento(id_atendimento):
     if novo_status not in STATUS_VALIDOS:
         return jsonify({"erro": f"Status inválido. Use: {', '.join(STATUS_VALIDOS)}"}), 400
 
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -460,15 +541,20 @@ def update_status_atendimento(id_atendimento):
         conexao.commit()
         return jsonify({"mensagem": f"Status atualizado para '{novo_status}'"}), 200
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 @app.route('/api/atendimentos/<int:id_atendimento>', methods=['DELETE'])
 def delete_atendimento(id_atendimento):
+    conexao = None
+    cursor = None
     try:
         conexao = conectar()
         cursor = conexao.cursor()
@@ -478,11 +564,14 @@ def delete_atendimento(id_atendimento):
         conexao.commit()
         return jsonify({"mensagem": "Atendimento removido com sucesso!"}), 200
     except Exception as e:
-        conexao.rollback()
+        if conexao:
+            conexao.rollback()
         return jsonify({"erro": str(e)}), 500
     finally:
-        cursor.close()
-        conexao.close()
+        if cursor:
+            cursor.close()
+        if conexao:
+            conexao.close()
 
 
 # ══════════════════════════════════════════
@@ -505,7 +594,6 @@ def enviar_mensagem():
     if tipo not in TIPOS_VALIDOS:
         return jsonify({"erro": f"Tipo inválido. Use: {', '.join(TIPOS_VALIDOS)}"}), 400
 
-    # Simula diferentes textos por tipo de mensagem
     textos = {
         'confirmacao_matricula': f"Olá, {aluno}! Sua matrícula foi confirmada com sucesso.",
         'lembrete_atendimento': f"Olá, {aluno}! Lembramos que você tem um atendimento agendado.",
