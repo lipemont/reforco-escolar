@@ -1,824 +1,847 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Centro de Educação e Reforço Estudantil da Bahia</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/lucide@latest"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centro de Educação e Reforço Estudantil da Bahia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="stylesheet" href="/static/reforco.css" />
-  </head>
-  <body>
-    <section id="telaLogin" class="tela-login">
-      <div class="card-login">
-        <div class="topo-login">
-          <i data-lucide="book-open" size="36"></i>
-          <h1>Centro de Educação e Reforço Estudantil da Bahia</h1>
-        </div>
-
-        <div class="conteudo-login">
-          <h2>Portal de Login</h2>
-          <p>
-            Acesse sua área administrativa para manipular cadastros, cursos,
-            matrículas e atendimentos.
-          </p>
-
-          <form id="formLogin">
-            <div class="campo-login">
-              <label>Email</label>
-              <input type="email" placeholder="Digite seu email" required />
-            </div>
-
-            <div class="campo-login">
-              <label>Senha</label>
-              <input type="password" placeholder="Digite sua senha" required />
-            </div>
-
-            <button class="botao-azul" type="submit" style="width: 100%">
-              <i data-lucide="log-in"></i>
-              Entrar
-            </button>
-          </form>
-        </div>
+  <link rel="stylesheet" href="/static/reforco.css">
+</head>
+<body>
+  <section id="telaLogin" class="tela-login">
+    <div class="card-login">
+      <div class="topo-login">
+        <i data-lucide="book-open" size="36"></i>
+        <h1>Centro de Educação e Reforço Estudantil da Bahia</h1>
       </div>
-    </section>
 
-    <div id="aplicacao" class="aplicacao oculto">
-      <header class="topbar">
-        <div class="marca">
-          <i data-lucide="book-open" size="34"></i>
-          <span>Centro de Educação e Reforço Estudantil da Bahia</span>
-        </div>
+      <div class="conteudo-login">
+        <h2>Portal de Login</h2>
+        <p>Acesse sua área administrativa para manipular cadastros, cursos, matrículas e atendimentos.</p>
 
-        <button class="botao-perfil-topo" data-tela="perfil">
-          <span>Administrador</span>
-          <div class="avatar-topo">
-            <i data-lucide="user" size="26"></i>
+        <form id="formLogin">
+          <div class="campo-login">
+            <label>Email</label>
+            <input type="email" placeholder="Digite seu email" required>
           </div>
-        </button>
-      </header>
 
-      <aside class="menu-lateral">
-        <button class="item-menu ativo" data-tela="inicio">
-          <i data-lucide="home"></i>
-          <span>Início</span>
-        </button>
+          <div class="campo-login">
+            <label>Senha</label>
+            <input type="password" placeholder="Digite sua senha" required>
+          </div>
 
-        <button class="item-menu" data-tela="alunos">
-          <i data-lucide="users"></i>
-          <span>Alunos</span>
-        </button>
+          <button class="botao-azul" type="submit" style="width: 100%;">
+            <i data-lucide="log-in"></i>
+            Entrar
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
 
-        <button class="item-menu" data-tela="cursos">
-          <i data-lucide="book-open"></i>
-          <span>Cursos</span>
-        </button>
+  <div id="aplicacao" class="aplicacao oculto">
+    <header class="topbar">
+      <div class="marca">
+        <i data-lucide="book-open" size="34"></i>
+        <span>Centro de Educação e Reforço Estudantil da Bahia</span>
+      </div>
 
-        <button class="item-menu" data-tela="matriculas">
-          <i data-lucide="clipboard-list"></i>
-          <span>Matrículas</span>
-        </button>
+      <button class="botao-perfil-topo" data-tela="perfil">
+        <span>Administrador</span>
+        <div class="avatar-topo">
+          <i data-lucide="user" size="26"></i>
+        </div>
+      </button>
+    </header>
 
-        <button class="item-menu" data-tela="atendimentos">
-          <i data-lucide="calendar"></i>
-          <span>Atendimentos</span>
-        </button>
-      </aside>
+    <aside class="menu-lateral">
+      <button class="item-menu ativo" data-tela="inicio">
+        <i data-lucide="home"></i>
+        <span>Início</span>
+      </button>
 
-      <main class="principal">
-        <div class="container">
-          <section id="inicio" class="tela">
-            <h1>Informações Gerais</h1>
+      <button class="item-menu" data-tela="alunos">
+        <i data-lucide="users"></i>
+        <span>Alunos</span>
+      </button>
 
-            <div class="grade-cards">
-              <div class="card-info">
-                <i data-lucide="users" size="36"></i>
-                <div class="numero-card">0</div>
-                <div class="texto-card">Total de Alunos</div>
-              </div>
+      <button class="item-menu" data-tela="cursos">
+        <i data-lucide="book-open"></i>
+        <span>Cursos</span>
+      </button>
 
-              <div class="card-info">
-                <i data-lucide="book-open" size="36"></i>
-                <div class="numero-card">0</div>
-                <div class="texto-card">Total de Cursos</div>
-              </div>
+      <button class="item-menu" data-tela="matriculas">
+        <i data-lucide="clipboard-list"></i>
+        <span>Matrículas</span>
+      </button>
 
-              <div class="card-info">
-                <i data-lucide="clipboard-list" size="36"></i>
-                <div class="numero-card">0</div>
-                <div class="texto-card">Matrículas Ativas</div>
-              </div>
+      <button class="item-menu" data-tela="atendimentos">
+        <i data-lucide="calendar"></i>
+        <span>Atendimentos</span>
+      </button>
+    </aside>
 
-              <div class="card-info">
-                <i data-lucide="calendar" size="36"></i>
-                <div class="numero-card">0</div>
-                <div class="texto-card">Atendimentos Agendados</div>
-              </div>
+    <main class="principal">
+      <div class="container">
+        <section id="inicio" class="tela">
+          <h1>Informações Gerais</h1>
+
+          <div class="grade-cards">
+            <div class="card-info">
+              <i data-lucide="users" size="36"></i>
+              <div id="contadorAlunos" class="numero-card">0</div>
+              <div class="texto-card">Total de Alunos</div>
             </div>
 
-            <h2 class="titulo-rapido">Ações rápidas</h2>
-
-            <div class="grade-acoes">
-              <button class="botao-azul" data-tela="cadastroAluno">
-                <i data-lucide="user-plus"></i>
-                Cadastrar Aluno
-              </button>
-
-              <button class="botao-azul" data-tela="cadastroCurso">
-                <i data-lucide="plus"></i>
-                Criar Curso
-              </button>
-
-              <button class="botao-azul" data-tela="matriculas">
-                <i data-lucide="plus"></i>
-                Nova Matrícula
-              </button>
-
-              <button class="botao-azul" data-tela="cadastroAtendimento">
-                <i data-lucide="calendar-plus"></i>
-                Agendar Atendimento
-              </button>
+            <div class="card-info">
+              <i data-lucide="book-open" size="36"></i>
+              <div class="numero-card">0</div>
+              <div class="texto-card">Total de Cursos</div>
             </div>
 
-            <div class="painel">
-              <div class="cabecalho-painel">Próximos atendimentos</div>
-              <div class="estado-vazio">Nenhum atendimento agendado.</div>
+            <div class="card-info">
+              <i data-lucide="clipboard-list" size="36"></i>
+              <div class="numero-card">0</div>
+              <div class="texto-card">Matrículas Ativas</div>
             </div>
-          </section>
 
-          <section id="alunos" class="tela oculto">
-            <h1>Alunos</h1>
-            <p class="subtitulo">Lista de alunos cadastrados</p>
+            <div class="card-info">
+              <i data-lucide="calendar" size="36"></i>
+              <div class="numero-card">0</div>
+              <div class="texto-card">Atendimentos Agendados</div>
+            </div>
+          </div>
 
-            <div class="card-filtros">
-              <div class="campo-busca">
-                <i data-lucide="search"></i>
-                <input type="text" placeholder="Buscar aluno por nome" />
+          <h2 class="titulo-rapido">Ações rápidas</h2>
+
+          <div class="grade-acoes">
+            <button class="botao-azul" data-tela="cadastroAluno">
+              <i data-lucide="user-plus"></i>
+              Cadastrar Aluno
+            </button>
+
+            <button class="botao-azul" data-tela="cadastroCurso">
+              <i data-lucide="plus"></i>
+              Criar Curso
+            </button>
+
+            <button class="botao-azul" data-tela="matriculas">
+              <i data-lucide="plus"></i>
+              Nova Matrícula
+            </button>
+
+            <button class="botao-azul" data-tela="cadastroAtendimento">
+              <i data-lucide="calendar-plus"></i>
+              Agendar Atendimento
+            </button>
+          </div>
+
+          <div class="painel">
+            <div class="cabecalho-painel">Próximos atendimentos</div>
+            <div class="estado-vazio">Nenhum atendimento agendado.</div>
+          </div>
+        </section>
+
+        <section id="alunos" class="tela oculto">
+          <h1>Alunos</h1>
+          <p class="subtitulo">Lista de alunos cadastrados</p>
+
+          <div class="card-filtros">
+            <div class="campo-busca">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Buscar aluno por nome">
+            </div>
+
+            <select>
+              <option>Todos os níveis</option>
+              <option>Básico</option>
+              <option>Intermediário</option>
+              <option>Avançado</option>
+            </select>
+
+            <button class="botao-azul" data-tela="cadastroAluno">
+              <i data-lucide="user-plus"></i>
+              Cadastrar aluno
+            </button>
+          </div>
+
+          <div class="card-tabela">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Nível</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="5" class="estado-vazio">Nenhum aluno cadastrado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="cadastroAluno" class="tela oculto">
+          <h1>Cadastro de Aluno</h1>
+
+          <div class="card-formulario">
+            <form id="formAluno" class="formulario-visual">
+              <div class="grade-formulario">
+                <div>
+                  <label>Nome completo <span class="obrigatorio">*</span></label>
+                  <input id="nomeAluno" placeholder="Digite o nome completo" required>
+                </div>
+
+                <div>
+                  <label>Email <span class="obrigatorio">*</span></label>
+                  <input id="emailAluno" type="email" placeholder="Digite o email" required>
+                </div>
+
+                <div>
+                  <label>Telefone</label>
+                  <input id="telefoneAluno" placeholder="(xx) xxxxx-xxxx">
+                </div>
+
+                <div>
+                  <label>Nível</label>
+                  <select id="nivelAluno">
+                    <option>Selecione o nível</option>
+                    <option>Básico</option>
+                    <option>Intermediário</option>
+                    <option>Avançado</option>
+                  </select>
+                </div>
+
+                <div class="linha-inteira">
+                  <label>Observações</label>
+                  <textarea placeholder="Informações adicionais sobre o aluno"></textarea>
+                </div>
               </div>
 
-              <select>
-                <option>Todos os níveis</option>
-                <option>Básico</option>
-                <option>Intermediário</option>
-                <option>Avançado</option>
-              </select>
+              <div class="acoes-formulario">
+                <button type="button" class="botao-cinza" data-tela="alunos">Cancelar</button>
+                <button type="submit" class="botao-azul">Salvar</button>
+              </div>
+            </form>
+          </div>
+        </section>
 
-              <button class="botao-azul" data-tela="cadastroAluno">
-                <i data-lucide="user-plus"></i>
-                Cadastrar aluno
+        <section id="cursos" class="tela oculto">
+          <h1>Cursos</h1>
+          <p class="subtitulo">Lista de cursos cadastrados</p>
+
+          <div class="card-filtros">
+            <div class="campo-busca">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Buscar curso por nome">
+            </div>
+
+            <select>
+              <option>Todos os níveis</option>
+              <option>Básico</option>
+              <option>Intermediário</option>
+              <option>Avançado</option>
+            </select>
+
+            <button class="botao-azul" data-tela="cadastroCurso">
+              <i data-lucide="plus"></i>
+              Cadastrar curso
+            </button>
+          </div>
+
+          <div class="card-tabela">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome do Curso</th>
+                  <th>Nível</th>
+                  <th>Vagas Totais</th>
+                  <th>Vagas Ocupadas</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="6" class="estado-vazio">Nenhum curso cadastrado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="cadastroCurso" class="tela oculto">
+          <h1>Cadastro de Curso</h1>
+
+          <div class="card-formulario">
+            <form class="formulario-visual">
+              <div class="grade-formulario">
+                <div>
+                  <label>Nome do curso <span class="obrigatorio">*</span></label>
+                  <input placeholder="Ex: Matemática Básica">
+                </div>
+
+                <div>
+                  <label>Nível <span class="obrigatorio">*</span></label>
+                  <select>
+                    <option>Selecione o nível</option>
+                    <option>Básico</option>
+                    <option>Intermediário</option>
+                    <option>Avançado</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Quantidade de vagas <span class="obrigatorio">*</span></label>
+                  <input type="number" placeholder="Ex: 30">
+                </div>
+
+                <div>
+                  <label>Carga horária</label>
+                  <input placeholder="Ex: 40h">
+                </div>
+
+                <div class="linha-inteira">
+                  <label>Descrição do curso</label>
+                  <textarea placeholder="Descreva o conteúdo do curso"></textarea>
+                </div>
+              </div>
+
+              <div class="acoes-formulario">
+                <button type="button" class="botao-cinza" data-tela="cursos">Cancelar</button>
+                <button type="submit" class="botao-azul">Salvar</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section id="matriculas" class="tela oculto">
+          <h1>Nova Matrícula</h1>
+          <p class="subtitulo">Vincular aluno a um curso</p>
+
+          <div class="card-formulario">
+            <form class="formulario-visual">
+              <div class="grade-formulario">
+                <div>
+                  <label>Selecionar Aluno</label>
+                  <select>
+                    <option>Selecione um aluno</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Selecionar Curso</label>
+                  <select>
+                    <option>Selecione um curso</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="caixa-vagas">
+                <div class="grade-vagas">
+                  <div>Vagas totais: <strong>0</strong></div>
+                  <div>Vagas ocupadas: <strong>0</strong></div>
+                  <div>Vagas disponíveis: <strong>0</strong></div>
+                </div>
+
+                <div class="barra-progresso" style="width: 100%;">
+                  <span style="width: 0%;"></span>
+                </div>
+
+                <div class="texto-card" style="margin-top: 8px;">0/0 vagas ocupadas</div>
+              </div>
+
+              <label>Data da Matrícula</label>
+              <input type="date">
+
+              <div class="acoes-formulario">
+                <button type="button" class="botao-contorno" data-tela="inicio">Cancelar</button>
+                <button type="submit" class="botao-azul">Matricular</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section id="cadastroAtendimento" class="tela oculto">
+          <h1>Agendar Atendimento</h1>
+          <p class="subtitulo">Registrar atendimento para um aluno</p>
+
+          <div class="card-formulario">
+            <form class="formulario-visual">
+              <div class="grade-formulario">
+                <div>
+                  <label>Selecionar Aluno <span class="obrigatorio">*</span></label>
+                  <select>
+                    <option>Selecione um aluno</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Data do Atendimento <span class="obrigatorio">*</span></label>
+                  <input type="date">
+                </div>
+
+                <div>
+                  <label>Horário <span class="obrigatorio">*</span></label>
+                  <input type="time">
+                </div>
+
+                <div>
+                  <label>Motivo <span class="obrigatorio">*</span></label>
+                  <input placeholder="Ex: Dificuldade em matemática">
+                </div>
+
+                <div class="linha-inteira">
+                  <label>Observações</label>
+                  <textarea placeholder="Detalhes adicionais sobre o atendimento"></textarea>
+                </div>
+              </div>
+
+              <div class="acoes-formulario">
+                <button type="button" class="botao-contorno" data-tela="atendimentos">Cancelar</button>
+                <button type="submit" class="botao-azul">Agendar</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section id="atendimentos" class="tela oculto">
+          <h1>Atendimentos</h1>
+          <p class="subtitulo">Lista de atendimentos agendados</p>
+
+          <div class="card-filtros card-filtros-atendimento">
+            <div class="campo-busca">
+              <i data-lucide="search"></i>
+              <input type="text" placeholder="Buscar por nome do aluno">
+            </div>
+
+            <input type="date">
+
+            <select>
+              <option>Todos</option>
+              <option>Agendado</option>
+              <option>Realizado</option>
+              <option>Cancelado</option>
+            </select>
+
+            <button class="botao-azul" data-tela="cadastroAtendimento">
+              <i data-lucide="plus"></i>
+              Agendar atendimento
+            </button>
+          </div>
+
+          <div class="card-tabela">
+            <table>
+              <thead>
+                <tr>
+                  <th>Aluno</th>
+                  <th>Data</th>
+                  <th>Horário</th>
+                  <th>Motivo</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="6" class="estado-vazio">Nenhum atendimento cadastrado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="perfil" class="tela oculto">
+          <h1>Perfil do Administrador</h1>
+          <p class="subtitulo">Área do usuário responsável pelo sistema.</p>
+
+          <div class="perfil-grid">
+            <div class="card-perfil perfil-resumo">
+              <div class="perfil-avatar">
+                <i data-lucide="user" size="54"></i>
+              </div>
+
+              <div class="perfil-nome">Administrador</div>
+              <div class="perfil-funcao">Responsável pelo sistema</div>
+
+              <div class="perfil-linha">
+                <i data-lucide="mail"></i>
+                <span>admin@reforco.com</span>
+              </div>
+
+              <div class="perfil-linha">
+                <i data-lucide="shield-check"></i>
+                <span>Acesso administrativo</span>
+              </div>
+
+              <div class="perfil-linha">
+                <i data-lucide="clock"></i>
+                <span>Último acesso: hoje</span>
+              </div>
+
+              <button id="botaoSair" class="botao-sair" type="button">
+                <i data-lucide="log-out"></i>
+                Sair da conta
               </button>
             </div>
 
-            <div class="card-tabela">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Telefone</th>
-                    <th>Nível</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colspan="5" class="estado-vazio">
-                      Nenhum aluno cadastrado.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section id="cadastroAluno" class="tela oculto">
-            <h1>Cadastro de Aluno</h1>
-
-            <div class="card-formulario">
+            <div class="card-perfil">
               <form class="formulario-visual">
                 <div class="grade-formulario">
                   <div>
-                    <label
-                      >Nome completo <span class="obrigatorio">*</span></label
-                    >
-                    <input placeholder="Digite o nome completo" />
+                    <label>Nome do administrador</label>
+                    <input placeholder="Administrador">
                   </div>
 
                   <div>
-                    <label>Email <span class="obrigatorio">*</span></label>
-                    <input type="email" placeholder="Digite o email" />
+                    <label>Email de acesso</label>
+                    <input type="email" placeholder="admin@reforco.com">
+                  </div>
+
+                  <div>
+                    <label>Cargo/Função</label>
+                    <input placeholder="Responsável pelo sistema">
                   </div>
 
                   <div>
                     <label>Telefone</label>
-                    <input placeholder="(xx) xxxxx-xxxx" />
-                  </div>
-
-                  <div>
-                    <label>Nível</label>
-                    <select>
-                      <option>Selecione o nível</option>
-                      <option>Básico</option>
-                      <option>Intermediário</option>
-                      <option>Avançado</option>
-                    </select>
-                  </div>
-
-                  <div class="linha-inteira">
-                    <label>Observações</label>
-                    <textarea
-                      placeholder="Informações adicionais sobre o aluno"
-                    ></textarea>
+                    <input placeholder="(xx) xxxxx-xxxx">
                   </div>
                 </div>
 
                 <div class="acoes-formulario">
-                  <button type="button" class="botao-cinza" data-tela="alunos">
-                    Cancelar
-                  </button>
-                  <button type="submit" class="botao-azul">Salvar</button>
+                  <button type="button" class="botao-contorno" data-tela="inicio">Cancelar</button>
+                  <button type="submit" class="botao-azul">Salvar perfil</button>
                 </div>
               </form>
-            </div>
-          </section>
 
-          <section id="cursos" class="tela oculto">
-            <h1>Cursos</h1>
-            <p class="subtitulo">Lista de cursos cadastrados</p>
-
-            <div class="card-filtros">
-              <div class="campo-busca">
-                <i data-lucide="search"></i>
-                <input type="text" placeholder="Buscar curso por nome" />
-              </div>
-
-              <select>
-                <option>Todos os níveis</option>
-                <option>Básico</option>
-                <option>Intermediário</option>
-                <option>Avançado</option>
-              </select>
-
-              <button class="botao-azul" data-tela="cadastroCurso">
-                <i data-lucide="plus"></i>
-                Cadastrar curso
-              </button>
-            </div>
-
-            <div class="card-tabela">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nome do Curso</th>
-                    <th>Nível</th>
-                    <th>Vagas Totais</th>
-                    <th>Vagas Ocupadas</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colspan="6" class="estado-vazio">
-                      Nenhum curso cadastrado.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section id="cadastroCurso" class="tela oculto">
-            <h1>Cadastro de Curso</h1>
-
-            <div class="card-formulario">
-              <form class="formulario-visual">
-                <div class="grade-formulario">
-                  <div>
-                    <label
-                      >Nome do curso <span class="obrigatorio">*</span></label
-                    >
-                    <input placeholder="Ex: Matemática Básica" />
-                  </div>
-
-                  <div>
-                    <label>Nível <span class="obrigatorio">*</span></label>
-                    <select>
-                      <option>Selecione o nível</option>
-                      <option>Básico</option>
-                      <option>Intermediário</option>
-                      <option>Avançado</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label
-                      >Quantidade de vagas
-                      <span class="obrigatorio">*</span></label
-                    >
-                    <input type="number" placeholder="Ex: 30" />
-                  </div>
-
-                  <div>
-                    <label>Carga horária</label>
-                    <input placeholder="Ex: 40h" />
-                  </div>
-
-                  <div class="linha-inteira">
-                    <label>Descrição do curso</label>
-                    <textarea
-                      placeholder="Descreva o conteúdo do curso"
-                    ></textarea>
-                  </div>
+              <div class="perfil-estatisticas">
+                <div class="mini-card">
+                  <strong>0</strong>
+                  <span>Alunos</span>
                 </div>
 
-                <div class="acoes-formulario">
-                  <button type="button" class="botao-cinza" data-tela="cursos">
-                    Cancelar
-                  </button>
-                  <button type="submit" class="botao-azul">Salvar</button>
-                </div>
-              </form>
-            </div>
-          </section>
-
-          <section id="matriculas" class="tela oculto">
-            <h1>Nova Matrícula</h1>
-            <p class="subtitulo">Vincular aluno a um curso</p>
-
-            <div class="card-formulario">
-              <form class="formulario-visual">
-                <div class="grade-formulario">
-                  <div>
-                    <label>Pesquisar Aluno</label>
-
-                    <div class="campo-busca">
-                      <i data-lucide="search"></i>
-                      <input
-                        type="text"
-                        id="pesquisaAluno"
-                        placeholder="Digite o nome do aluno"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label>Selecionar Curso</label>
-                    <select>
-                      <option>Selecione um curso</option>
-                    </select>
-                  </div>
+                <div class="mini-card">
+                  <strong>0</strong>
+                  <span>Cursos</span>
                 </div>
 
-                <div class="caixa-vagas">
-                  <div class="grade-vagas">
-                    <div>Vagas totais: <strong>0</strong></div>
-                    <div>Vagas ocupadas: <strong>0</strong></div>
-                    <div>Vagas disponíveis: <strong>0</strong></div>
-                  </div>
-
-                  <div class="barra-progresso" style="width: 100%">
-                    <span style="width: 0%"></span>
-                  </div>
-
-                  <div class="texto-card" style="margin-top: 8px">
-                    0/0 vagas ocupadas
-                  </div>
-                </div>
-
-                <label>Data da Matrícula</label>
-                <input type="date" />
-
-                <div class="acoes-formulario">
-                  <button
-                    type="button"
-                    class="botao-contorno"
-                    data-tela="inicio"
-                  >
-                    Cancelar
-                  </button>
-                  <button type="submit" class="botao-azul">Matricular</button>
-                </div>
-              </form>
-            </div>
-          </section>
-
-          <section id="cadastroAtendimento" class="tela oculto">
-            <h1>Agendar Atendimento</h1>
-            <p class="subtitulo">Registrar atendimento para um aluno</p>
-
-            <div class="card-formulario">
-              <form class="formulario-visual">
-                <div class="grade-formulario">
-                  <div>
-                    <label
-                      >Selecionar Aluno
-                      <span class="obrigatorio">*</span></label
-                    >
-                    <select>
-                      <option>Selecione um aluno</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label
-                      >Data do Atendimento
-                      <span class="obrigatorio">*</span></label
-                    >
-                    <input type="date" />
-                  </div>
-
-                  <div>
-                    <label>Horário <span class="obrigatorio">*</span></label>
-                    <input type="time" />
-                  </div>
-
-                  <div>
-                    <label>Motivo <span class="obrigatorio">*</span></label>
-                    <input placeholder="Ex: Dificuldade em matemática" />
-                  </div>
-
-                  <div class="linha-inteira">
-                    <label>Observações</label>
-                    <textarea
-                      placeholder="Detalhes adicionais sobre o atendimento"
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div class="acoes-formulario">
-                  <button
-                    type="button"
-                    class="botao-contorno"
-                    data-tela="atendimentos"
-                  >
-                    Cancelar
-                  </button>
-                  <button type="submit" class="botao-azul">Agendar</button>
-                </div>
-              </form>
-            </div>
-          </section>
-
-          <section id="atendimentos" class="tela oculto">
-            <h1>Atendimentos</h1>
-            <p class="subtitulo">Lista de atendimentos agendados</p>
-
-            <div class="card-filtros card-filtros-atendimento">
-              <div class="campo-busca">
-                <i data-lucide="search"></i>
-                <input type="text" placeholder="Buscar por nome do aluno" />
-              </div>
-
-              <input type="date" />
-
-              <select>
-                <option>Todos</option>
-                <option>Agendado</option>
-                <option>Realizado</option>
-                <option>Cancelado</option>
-              </select>
-
-              <button class="botao-azul" data-tela="cadastroAtendimento">
-                <i data-lucide="plus"></i>
-                Agendar atendimento
-              </button>
-            </div>
-
-            <div class="card-tabela">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Aluno</th>
-                    <th>Data</th>
-                    <th>Horário</th>
-                    <th>Motivo</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colspan="6" class="estado-vazio">
-                      Nenhum atendimento cadastrado.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <section id="perfil" class="tela oculto">
-            <h1>Perfil do Administrador</h1>
-            <p class="subtitulo">Área do usuário responsável pelo sistema.</p>
-
-            <div class="perfil-grid">
-              <div class="card-perfil perfil-resumo">
-                <div class="perfil-avatar">
-                  <i data-lucide="user" size="54"></i>
-                </div>
-
-                <div class="perfil-nome">Administrador</div>
-                <div class="perfil-funcao">Responsável pelo sistema</div>
-
-                <div class="perfil-linha">
-                  <i data-lucide="mail"></i>
-                  <span>admin@reforco.com</span>
-                </div>
-
-                <div class="perfil-linha">
-                  <i data-lucide="shield-check"></i>
-                  <span>Acesso administrativo</span>
-                </div>
-
-                <div class="perfil-linha">
-                  <i data-lucide="clock"></i>
-                  <span>Último acesso: hoje</span>
-                </div>
-
-                <button id="botaoSair" class="botao-sair" type="button">
-                  <i data-lucide="log-out"></i>
-                  Sair da conta
-                </button>
-              </div>
-
-              <div class="card-perfil">
-                <form class="formulario-visual">
-                  <div class="grade-formulario">
-                    <div>
-                      <label>Nome do administrador</label>
-                      <input placeholder="Administrador" />
-                    </div>
-
-                    <div>
-                      <label>Email de acesso</label>
-                      <input type="email" placeholder="admin@reforco.com" />
-                    </div>
-
-                    <div>
-                      <label>Cargo/Função</label>
-                      <input placeholder="Responsável pelo sistema" />
-                    </div>
-
-                    <div>
-                      <label>Telefone</label>
-                      <input placeholder="(xx) xxxxx-xxxx" />
-                    </div>
-                  </div>
-
-                  <div class="acoes-formulario">
-                    <button
-                      type="button"
-                      class="botao-contorno"
-                      data-tela="inicio"
-                    >
-                      Cancelar
-                    </button>
-                    <button type="submit" class="botao-azul">
-                      Salvar perfil
-                    </button>
-                  </div>
-                </form>
-
-                <div class="perfil-estatisticas">
-                  <div class="mini-card">
-                    <strong>0</strong>
-                    <span>Alunos</span>
-                  </div>
-
-                  <div class="mini-card">
-                    <strong>0</strong>
-                    <span>Cursos</span>
-                  </div>
-
-                  <div class="mini-card">
-                    <strong>0</strong>
-                    <span>Atendimentos</span>
-                  </div>
+                <div class="mini-card">
+                  <strong>0</strong>
+                  <span>Atendimentos</span>
                 </div>
               </div>
             </div>
-          </section>
-        </div>
-      </main>
-    </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
 
-    <div id="mensagem" class="mensagem-flutuante">Ação visual realizada.</div>
+  <div id="mensagem" class="mensagem-flutuante">Ação visual realizada.</div>
 
-    <script>
-      const configuracao = {
-        telaInicial: "inicio",
-        duracaoMensagem: 2200,
-        telasComMenuRelacionado: {
-          cadastroAluno: "alunos",
-          cadastroCurso: "cursos",
-          cadastroAtendimento: "atendimentos",
-        },
-        mensagens: {
-          login: "Login realizado com sucesso.",
-          formulario: "Informações enviadas com sucesso.",
-          logout: "Você saiu da conta.",
-        },
-      };
+  <script>
+    const configuracao = {
+      telaInicial: 'inicio',
+      duracaoMensagem: 2200,
+      telasComMenuRelacionado: {
+        cadastroAluno: 'alunos',
+        cadastroCurso: 'cursos',
+        cadastroAtendimento: 'atendimentos'
+      },
+      mensagens: {
+        login: 'Login realizado com sucesso.',
+        formulario: 'Informações enviadas com sucesso.',
+        logout: 'Você saiu da conta.'
+      }
+    };
 
-      const elementos = {
-        telaLogin: document.getElementById("telaLogin"),
-        aplicacao: document.getElementById("aplicacao"),
-        formLogin: document.getElementById("formLogin"),
-        telas: document.querySelectorAll(".tela"),
-        itensMenu: document.querySelectorAll(".item-menu"),
-        mensagem: document.getElementById("mensagem"),
-        botaoSair: document.getElementById("botaoSair"),
-        formularios: document.querySelectorAll(".formulario-visual"),
-      };
+    const elementos = {
+      telaLogin: document.getElementById('telaLogin'),
+      aplicacao: document.getElementById('aplicacao'),
+      formLogin: document.getElementById('formLogin'),
+      telas: document.querySelectorAll('.tela'),
+      itensMenu: document.querySelectorAll('.item-menu'),
+      mensagem: document.getElementById('mensagem'),
+      botaoSair: document.getElementById('botaoSair'),
+      formularios: document.querySelectorAll('.formulario-visual')
+    };
 
-      let temporizadorMensagem = null;
+    let temporizadorMensagem = null;
 
-      function removerClasse(elemento, classe) {
-        if (elemento) {
-          elemento.classList.remove(classe);
+    function removerClasse(elemento, classe) {
+      if (elemento) {
+        elemento.classList.remove(classe);
+      }
+    }
+
+    function adicionarClasse(elemento, classe) {
+      if (elemento) {
+        elemento.classList.add(classe);
+      }
+    }
+
+    function alternarVisibilidade(elemento, deveMostrar) {
+      if (deveMostrar) {
+        removerClasse(elemento, 'oculto');
+      } else {
+        adicionarClasse(elemento, 'oculto');
+      }
+    }
+
+    function buscarTela(nomeDaTela) {
+      return document.getElementById(nomeDaTela);
+    }
+
+    function limparMenuAtivo() {
+      elementos.itensMenu.forEach(function(itemMenu) {
+        itemMenu.classList.remove('ativo');
+      });
+    }
+
+    function ativarItemMenu(nomeDaTela) {
+      limparMenuAtivo();
+
+      elementos.itensMenu.forEach(function(itemMenu) {
+        const telaDoMenu = itemMenu.dataset.tela;
+        const telaRelacionada = configuracao.telasComMenuRelacionado[nomeDaTela];
+        const deveAtivar = telaDoMenu === nomeDaTela || telaDoMenu === telaRelacionada;
+
+        if (deveAtivar) {
+          itemMenu.classList.add('ativo');
         }
+      });
+    }
+
+    function atualizarIcones() {
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    function rolarParaTopo() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function abrirTela(nomeDaTela) {
+      const telaSelecionada = buscarTela(nomeDaTela);
+
+      if (!telaSelecionada) {
+        return;
       }
 
-      function adicionarClasse(elemento, classe) {
-        if (elemento) {
-          elemento.classList.add(classe);
-        }
+      elementos.telas.forEach(function(tela) {
+        const deveMostrar = tela.id === nomeDaTela;
+        alternarVisibilidade(tela, deveMostrar);
+      });
+
+      ativarItemMenu(nomeDaTela);
+      rolarParaTopo();
+      atualizarIcones();
+    }
+
+    function mostrarMensagem(texto) {
+      if (!elementos.mensagem) {
+        return;
       }
 
-      function alternarVisibilidade(elemento, deveMostrar) {
-        if (deveMostrar) {
-          removerClasse(elemento, "oculto");
+      clearTimeout(temporizadorMensagem);
+      elementos.mensagem.textContent = texto;
+      elementos.mensagem.style.display = 'block';
+
+      temporizadorMensagem = setTimeout(function() {
+        elementos.mensagem.style.display = 'none';
+      }, configuracao.duracaoMensagem);
+    }
+
+    function entrarNoSistema() {
+      adicionarClasse(elementos.telaLogin, 'oculto');
+      removerClasse(elementos.aplicacao, 'oculto');
+      abrirTela(configuracao.telaInicial);
+      carregarAlunos(); // Carrega os dados da API ao logar
+      mostrarMensagem(configuracao.mensagens.login);
+    }
+
+    function sairDoSistema() {
+      adicionarClasse(elementos.aplicacao, 'oculto');
+      removerClasse(elementos.telaLogin, 'oculto');
+      mostrarMensagem(configuracao.mensagens.logout);
+    }
+
+    function limparCamposDoFormulario(formulario) {
+      if (!formulario) {
+        return;
+      }
+
+      const campos = formulario.querySelectorAll('input, textarea, select');
+
+      campos.forEach(function(campo) {
+        if (campo.tagName === 'SELECT') {
+          campo.selectedIndex = 0;
         } else {
-          adicionarClasse(elemento, "oculto");
+          campo.value = '';
         }
-      }
+      });
+    }
 
-      function buscarTela(nomeDaTela) {
-        return document.getElementById(nomeDaTela);
-      }
+    function configurarLogin() {
+      elementos.formLogin.addEventListener('submit', function(evento) {
+        evento.preventDefault();
+        entrarNoSistema();
+      });
+    }
 
-      function limparMenuAtivo() {
-        elementos.itensMenu.forEach(function (itemMenu) {
-          itemMenu.classList.remove("ativo");
-        });
-      }
+    function configurarNavegacao() {
+      document.addEventListener('click', function(evento) {
+        const botaoNavegacao = evento.target.closest('[data-tela]');
 
-      function ativarItemMenu(nomeDaTela) {
-        limparMenuAtivo();
-
-        elementos.itensMenu.forEach(function (itemMenu) {
-          const telaDoMenu = itemMenu.dataset.tela;
-          const telaRelacionada =
-            configuracao.telasComMenuRelacionado[nomeDaTela];
-          const deveAtivar =
-            telaDoMenu === nomeDaTela || telaDoMenu === telaRelacionada;
-
-          if (deveAtivar) {
-            itemMenu.classList.add("ativo");
-          }
-        });
-      }
-
-      function atualizarIcones() {
-        if (window.lucide) {
-          lucide.createIcons();
-        }
-      }
-
-      function rolarParaTopo() {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      }
-
-      function abrirTela(nomeDaTela) {
-        const telaSelecionada = buscarTela(nomeDaTela);
-
-        if (!telaSelecionada) {
+        if (!botaoNavegacao) {
           return;
         }
 
-        elementos.telas.forEach(function (tela) {
-          const deveMostrar = tela.id === nomeDaTela;
-          alternarVisibilidade(tela, deveMostrar);
-        });
+        const telaDestino = botaoNavegacao.dataset.tela;
+        abrirTela(telaDestino);
+      });
+    }
 
-        ativarItemMenu(nomeDaTela);
-        rolarParaTopo();
-        atualizarIcones();
-      }
-
-      function mostrarMensagem(texto) {
-        if (!elementos.mensagem) {
+    function configurarFormularios() {
+      elementos.formularios.forEach(function(formulario) {
+        // Ignora o formAluno pois ele terá um evento específico para a API
+        if (formulario.id === 'formAluno') {
           return;
         }
-
-        clearTimeout(temporizadorMensagem);
-        elementos.mensagem.textContent = texto;
-        elementos.mensagem.style.display = "block";
-
-        temporizadorMensagem = setTimeout(function () {
-          elementos.mensagem.style.display = "none";
-        }, configuracao.duracaoMensagem);
-      }
-
-      function entrarNoSistema() {
-        adicionarClasse(elementos.telaLogin, "oculto");
-        removerClasse(elementos.aplicacao, "oculto");
-        abrirTela(configuracao.telaInicial);
-        mostrarMensagem(configuracao.mensagens.login);
-      }
-
-      function sairDoSistema() {
-        adicionarClasse(elementos.aplicacao, "oculto");
-        removerClasse(elementos.telaLogin, "oculto");
-        mostrarMensagem(configuracao.mensagens.logout);
-      }
-
-      function limparCamposDoFormulario(formulario) {
-        if (!formulario) {
-          return;
-        }
-
-        const campos = formulario.querySelectorAll("input, textarea, select");
-
-        campos.forEach(function (campo) {
-          if (campo.tagName === "SELECT") {
-            campo.selectedIndex = 0;
-          } else {
-            campo.value = "";
-          }
-        });
-      }
-
-      function configurarLogin() {
-        elementos.formLogin.addEventListener("submit", function (evento) {
+        formulario.addEventListener('submit', function(evento) {
           evento.preventDefault();
-          entrarNoSistema();
+          mostrarMensagem(configuracao.mensagens.formulario);
         });
-      }
+      });
+    }
 
-      function configurarNavegacao() {
-        document.addEventListener("click", function (evento) {
-          const botaoNavegacao = evento.target.closest("[data-tela]");
+    function configurarBotoesDeCancelar() {
+      document.addEventListener('click', function(evento) {
+        const botaoCancelar = evento.target.closest('.botao-cinza, .botao-contorno');
 
-          if (!botaoNavegacao) {
-            return;
-          }
+        if (!botaoCancelar) {
+          return;
+        }
 
-          const telaDestino = botaoNavegacao.dataset.tela;
-          abrirTela(telaDestino);
+        const formulario = botaoCancelar.closest('form');
+        limparCamposDoFormulario(formulario);
+      });
+    }
+
+    function configurarLogout() {
+      elementos.botaoSair.addEventListener('click', function() {
+        sairDoSistema();
+      });
+    }
+
+    // --- CONEXÃO COM A API PARA ALUNOS ---
+
+    const formAluno = document.getElementById('formAluno');
+
+    formAluno.addEventListener('submit', async function(evento) {
+      evento.preventDefault();
+
+      const dados = {
+        nome: document.getElementById('nomeAluno').value,
+        email: document.getElementById('emailAluno').value,
+        telefone: document.getElementById('telefoneAluno').value,
+        nivel: document.getElementById('nivelAluno').value
+      };
+
+      try {
+        const resposta = await fetch('/api/alunos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dados)
         });
-      }
 
-      function configurarFormularios() {
-        elementos.formularios.forEach(function (formulario) {
-          formulario.addEventListener("submit", function (evento) {
-            evento.preventDefault();
-            mostrarMensagem(configuracao.mensagens.formulario);
-          });
+        const resultado = await resposta.json();
+        
+        if (resposta.ok) {
+            mostrarMensagem(resultado.mensagem || 'Aluno cadastrado com sucesso!');
+            await carregarAlunos(); // Atualiza a tabela e o contador
+            formAluno.reset();
+            abrirTela('alunos'); // Opcional: Redireciona para a lista
+        } else {
+            mostrarMensagem(resultado.erro || 'Erro ao cadastrar aluno.');
+        }
+
+      } catch (erro) {
+        mostrarMensagem('Erro de conexão ao cadastrar aluno.');
+        console.error(erro);
+      }
+    });
+
+    async function carregarAlunos() {
+      try {
+        const resposta = await fetch('/api/alunos');
+        const alunos = await resposta.json();
+
+        const tbody = document.querySelector('#alunos tbody');
+
+        if (alunos.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="estado-vazio">Nenhum aluno cadastrado.</td>
+            </tr>
+          `;
+          document.getElementById('contadorAlunos').textContent = 0;
+          return;
+        }
+
+        tbody.innerHTML = '';
+
+        alunos.forEach(aluno => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${aluno.nome}</td>
+              <td>${aluno.email}</td>
+              <td>${aluno.telefone || '-'}</td>
+              <td>${aluno.nivel || '-'}</td>
+              <td>
+                <i data-lucide="edit" size="18" style="cursor:pointer; margin-right:8px; color:#64748b;"></i>
+                <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;"></i>
+              </td>
+            </tr>
+          `;
         });
-      }
 
-      function configurarBotoesDeCancelar() {
-        document.addEventListener("click", function (evento) {
-          const botaoCancelar = evento.target.closest(
-            ".botao-cinza, .botao-contorno",
-          );
-
-          if (!botaoCancelar) {
-            return;
-          }
-
-          const formulario = botaoCancelar.closest("form");
-          limparCamposDoFormulario(formulario);
-        });
-      }
-
-      function configurarLogout() {
-        elementos.botaoSair.addEventListener("click", function () {
-          sairDoSistema();
-        });
-      }
-
-      function iniciarAplicacao() {
-        configurarLogin();
-        configurarNavegacao();
-        configurarFormularios();
-        configurarBotoesDeCancelar();
-        configurarLogout();
+        // Atualiza o contador de alunos na tela inicial
+        document.getElementById('contadorAlunos').textContent = alunos.length;
+        
+        // Renderiza os novos ícones adicionados dinamicamente
         atualizarIcones();
-      }
 
-      iniciarAplicacao();
-    </script>
-  </body>
+      } catch (erro) {
+        console.error("Erro ao carregar lista de alunos:", erro);
+      }
+    }
+
+    function iniciarAplicacao() {
+      configurarLogin();
+      configurarNavegacao();
+      configurarFormularios();
+      configurarBotoesDeCancelar();
+      configurarLogout();
+      atualizarIcones();
+    }
+
+    iniciarAplicacao();
+  </script>
+</body>
 </html>
