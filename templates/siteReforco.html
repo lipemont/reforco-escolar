@@ -26,12 +26,12 @@
         <form id="formLogin">
           <div class="campo-login">
             <label>Email</label>
-            <input type="email" placeholder="Digite seu email" required>
+            <input type="email" id="emailLogin" placeholder="Digite seu email" required>
           </div>
 
           <div class="campo-login">
             <label>Senha</label>
-            <input type="password" placeholder="Digite sua senha" required>
+            <input type="password" id="senhaLogin" placeholder="Digite sua senha" required>
           </div>
 
           <button class="botao-azul" type="submit" style="width: 100%;">
@@ -50,12 +50,12 @@
         <span>Centro de Educação e Reforço Estudantil da Bahia</span>
       </div>
 
-      <button class="botao-perfil-topo" data-tela="perfil">
+      <div class="botao-perfil-topo">
         <span>Administrador</span>
         <div class="avatar-topo">
           <i data-lucide="user" size="26"></i>
         </div>
-      </button>
+      </div>
     </header>
 
     <aside class="menu-lateral">
@@ -82,6 +82,13 @@
       <button class="item-menu" data-tela="atendimentos">
         <i data-lucide="calendar"></i>
         <span>Atendimentos</span>
+      </button>
+
+      <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+      
+      <button id="botaoSair" class="item-menu">
+        <i data-lucide="log-out"></i>
+        <span>Sair do sistema</span>
       </button>
     </aside>
 
@@ -327,39 +334,25 @@
 
           <div class="card-formulario">
             <form id="formMatricula" class="formulario-visual">
-            <div class="grade-formulario">
-              
-              <div class="seletor-pesquisavel">
-                <label>Selecionar Aluno <span class="obrigatorio">*</span></label>
-                <div class="campo-busca">
-                  <input type="text" id="buscaAluno" placeholder="Digite o nome do aluno..." autocomplete="off" required>
-                </div>
-                <input type="hidden" id="idAlunoSelecionado">
-                <div id="listaSugestoesAluno" class="lista-sugestoes oculto"></div>
-              </div>
-
-              <div class="seletor-pesquisavel">
-                <label>Selecionar Curso <span class="obrigatorio">*</span></label>
-                <div class="campo-busca">
-                  <input type="text" id="buscaCurso" placeholder="Digite o nome do curso..." autocomplete="off" required>
-                </div>
-                <input type="hidden" id="idCursoSelecionado">
-                <div id="listaSugestoesCurso" class="lista-sugestoes oculto"></div>
-              </div>
-            </div>
-
-              <div class="caixa-vagas">
-                <div class="grade-vagas">
-                  <div>Vagas totais: <strong>0</strong></div>
-                  <div>Vagas ocupadas: <strong>0</strong></div>
-                  <div>Vagas disponíveis: <strong>0</strong></div>
+              <div class="grade-formulario">
+                
+                <div class="seletor-pesquisavel">
+                  <label>Selecionar Aluno <span class="obrigatorio">*</span></label>
+                  <div class="campo-busca">
+                    <input type="text" id="buscaAluno" placeholder="Digite o nome do aluno..." autocomplete="off" required>
+                  </div>
+                  <input type="hidden" id="idAlunoSelecionado">
+                  <div id="listaSugestoesAluno" class="lista-sugestoes oculto"></div>
                 </div>
 
-                <div class="barra-progresso" style="width: 100%;">
-                  <span style="width: 0%;"></span>
+                <div class="seletor-pesquisavel">
+                  <label>Selecionar Curso <span class="obrigatorio">*</span></label>
+                  <div class="campo-busca">
+                    <input type="text" id="buscaCurso" placeholder="Digite o nome do curso..." autocomplete="off" required>
+                  </div>
+                  <input type="hidden" id="idCursoSelecionado">
+                  <div id="listaSugestoesCurso" class="lista-sugestoes oculto"></div>
                 </div>
-
-                <div class="texto-card" style="margin-top: 8px;">0/0 vagas ocupadas</div>
               </div>
 
               <label>Data da Matrícula</label>
@@ -458,90 +451,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-        </section>
-
-        <section id="perfil" class="tela oculto">
-          <h1>Perfil do Administrador</h1>
-          <p class="subtitulo">Área do usuário responsável pelo sistema.</p>
-
-          <div class="perfil-grid">
-            <div class="card-perfil perfil-resumo">
-              <div class="perfil-avatar">
-                <i data-lucide="user" size="54"></i>
-              </div>
-
-              <div class="perfil-nome">Administrador</div>
-              <div class="perfil-funcao">Responsável pelo sistema</div>
-
-              <div class="perfil-linha">
-                <i data-lucide="mail"></i>
-                <span>admin@reforco.com</span>
-              </div>
-
-              <div class="perfil-linha">
-                <i data-lucide="shield-check"></i>
-                <span>Acesso administrativo</span>
-              </div>
-
-              <div class="perfil-linha">
-                <i data-lucide="clock"></i>
-                <span>Último acesso: hoje</span>
-              </div>
-
-              <button id="botaoSair" class="botao-sair" type="button">
-                <i data-lucide="log-out"></i>
-                Sair da conta
-              </button>
-            </div>
-
-            <div class="card-perfil">
-              <form class="formulario-visual">
-                <div class="grade-formulario">
-                  <div>
-                    <label>Nome do administrador</label>
-                    <input placeholder="Administrador">
-                  </div>
-
-                  <div>
-                    <label>Email de acesso</label>
-                    <input type="email" placeholder="admin@reforco.com">
-                  </div>
-
-                  <div>
-                    <label>Cargo/Função</label>
-                    <input placeholder="Responsável pelo sistema">
-                  </div>
-
-                  <div>
-                    <label>Telefone</label>
-                    <input placeholder="(xx) xxxxx-xxxx">
-                  </div>
-                </div>
-
-                <div class="acoes-formulario">
-                  <button type="button" class="botao-contorno" data-tela="inicio">Cancelar</button>
-                  <button type="submit" class="botao-azul">Salvar perfil</button>
-                </div>
-              </form>
-
-              <div class="perfil-estatisticas">
-                <div class="mini-card">
-                  <strong>0</strong>
-                  <span>Alunos</span>
-                </div>
-
-                <div class="mini-card">
-                  <strong>0</strong>
-                  <span>Cursos</span>
-                </div>
-
-                <div class="mini-card">
-                  <strong>0</strong>
-                  <span>Atendimentos</span>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
       </div>
@@ -700,7 +609,21 @@
     function configurarLogin() {
       elementos.formLogin.addEventListener('submit', function(evento) {
         evento.preventDefault();
-        entrarNoSistema();
+        
+        
+        const email = document.getElementById('emailLogin').value;
+        const senha = document.getElementById('senhaLogin').value;
+
+        
+        if (email === 'admin@gmail.com' && senha === 'admin0123') {
+          entrarNoSistema();
+        } else {
+        
+          mostrarMensagem('Email ou senha incorretos. Acesso recusado!');
+          
+          
+          document.getElementById('senhaLogin').value = '';
+        }
       });
     }
 
@@ -793,25 +716,21 @@
       }
     });
 
-    async function carregarAlunos() {
+async function carregarAlunos() {
       try {
         const resposta = await fetch('/api/alunos');
         const alunos = await resposta.json();
 
         const tbody = document.querySelector('#alunos tbody');
 
-        if (alunos.length === 0) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="5" class="estado-vazio">Nenhum aluno cadastrado.</td>
-            </tr>
-          `;
+        // Proteção antia-crash: se não for um array válido ou estiver vazio
+        if (!Array.isArray(alunos) || alunos.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="estado-vazio">Nenhum aluno cadastrado.</td></tr>`;
           document.getElementById('contadorAlunos').textContent = 0;
           return;
         }
 
         tbody.innerHTML = '';
-
         alunos.forEach(aluno => {
           tbody.innerHTML += `
             <tr>
@@ -827,21 +746,17 @@
           `;
         });
 
-        // Atualiza o contador de alunos na tela inicial
         document.getElementById('contadorAlunos').textContent = alunos.length;
         
-        
         const selectAtendimento = document.getElementById('atendimentoAluno');
-          if (selectAtendimento) {
-            selectAtendimento.innerHTML = '<option value="">Selecione um aluno</option>';
-            alunos.forEach(aluno => {
-              selectAtendimento.innerHTML += `<option value="${aluno.id_aluno}">${aluno.nome}</option>`;
-            });
-          }
+        if (selectAtendimento) {
+          selectAtendimento.innerHTML = '<option value="">Selecione um aluno</option>';
+          alunos.forEach(aluno => {
+            selectAtendimento.innerHTML += `<option value="${aluno.id_aluno}">${aluno.nome}</option>`;
+          });
+        }
 
-        // Renderiza os novos ícones adicionados dinamicamente
         atualizarIcones();
-
       } catch (erro) {
         console.error("Erro ao carregar lista de alunos:", erro);
       }
@@ -854,14 +769,29 @@
     let dadosCursos = [];
 
     // Busca as listas brutas da API para alimentar os campos de pesquisa
+    // Busca as listas brutas da API para alimentar os campos de pesquisa sem quebrar a referência
     async function carregarDadosParaBusca() {
       try {
         const [resAlunos, resCursos] = await Promise.all([
           fetch('/api/alunos'),
-          fetch('/api/cursos') // Certifique-se de ter essa rota no Flask
+          fetch('/api/cursos')
         ]);
-        dadosAlunos = await resAlunos.json();
-        dadosCursos = await resCursos.json();
+        
+        if (resAlunos.ok) {
+          const novosAlunos = await resAlunos.json();
+          if (Array.isArray(novosAlunos)) {
+            dadosAlunos.length = 0; // Limpa o array mantendo a referência
+            dadosAlunos.push(...novosAlunos); // Injeta os novos dados
+          }
+        }
+
+        if (resCursos.ok) {
+          const novosCursos = await resCursos.json();
+          if (Array.isArray(novosCursos)) {
+            dadosCursos.length = 0; // Limpa o array mantendo a referência
+            dadosCursos.push(...novosCursos); // Injeta os novos dados
+          }
+        }
       } catch (erro) {
         console.error("Erro ao carregar dados de busca para matrícula:", erro);
       }
@@ -994,7 +924,7 @@
       }
     }
 
-    // --- CADASTRO DE CURSOS ---
+   // --- CADASTRO DE CURSOS ---
     const formCurso = document.getElementById('formCurso');
       if (formCurso) {
         formCurso.addEventListener('submit', async function(e) {
@@ -1017,8 +947,10 @@
               formCurso.reset();
               abrirTela('cursos');
               await carregarCursos(); // Atualiza a tabela de cursos
+              await carregarDadosParaBusca(); // ✨ ADICIONADO AQUI: Agora atualiza a busca de matrículas na hora!
             } else {
-              mostrarMensagem('Erro ao cadastrar o curso.');
+              const resultadoErro = await resposta.json().catch(() => ({}));
+              mostrarMensagem(resultadoErro.erro || 'Erro ao cadastrar o curso.');
             }
           } catch (erro) {
             mostrarMensagem('Erro de conexão ao salvar curso.');
@@ -1062,8 +994,10 @@
         const cursos = await resposta.json();
         const tbody = document.querySelector('#cursos tbody');
 
-        if (cursos.length === 0) {
+        // Proteção anti-crash
+        if (!Array.isArray(cursos) || cursos.length === 0) {
           tbody.innerHTML = '<tr><td colspan="6" class="estado-vazio">Nenhum curso cadastrado.</td></tr>';
+          document.getElementById('contadorCursos').textContent = 0;
           return;
         }
 
@@ -1091,13 +1025,14 @@
     }
 
     // --- LÓGICA DE ATENDIMENTOS (LISTAR E EXCLUIR) ---
-    async function carregarAtendimentos() {
+   async function carregarAtendimentos() {
       try {
         const resposta = await fetch('/api/atendimentos');
         const atendimentos = await resposta.json();
         const tbody = document.querySelector('#atendimentos tbody');
 
-        if (atendimentos.length === 0) {
+        // Proteção anti-crash
+        if (!Array.isArray(atendimentos) || atendimentos.length === 0) {
           tbody.innerHTML = '<tr><td colspan="6" class="estado-vazio">Nenhum atendimento agendado.</td></tr>';
           document.getElementById('contadorAtendimentos').textContent = 0;
           return;
@@ -1105,7 +1040,6 @@
 
         tbody.innerHTML = '';
         atendimentos.forEach(atend => {
-          // Define a cor da etiqueta baseada no status
           let classeStatus = 'agendado';
           if (atend.status === 'realizado') classeStatus = 'realizado';
           else if (atend.status === 'cancelado') classeStatus = 'cancelado';
@@ -1124,7 +1058,6 @@
           `;
         });
         
-        // Atualiza o contador do início
         document.getElementById('contadorAtendimentos').textContent = atendimentos.length;
         atualizarIcones();
       } catch (erro) {
