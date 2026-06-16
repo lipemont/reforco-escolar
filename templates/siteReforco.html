@@ -99,19 +99,19 @@
 
             <div class="card-info">
               <i data-lucide="book-open" size="36"></i>
-              <div class="numero-card">0</div>
+              <div id="contadorCursos" class="numero-card">0</div>
               <div class="texto-card">Total de Cursos</div>
             </div>
 
             <div class="card-info">
               <i data-lucide="clipboard-list" size="36"></i>
-              <div class="numero-card">0</div>
+              <div id="contadorMatriculas" class="numero-card">0</div>
               <div class="texto-card">Matrículas Ativas</div>
             </div>
 
             <div class="card-info">
               <i data-lucide="calendar" size="36"></i>
-              <div class="numero-card">0</div>
+              <div id="contadorAtendimentos" class="numero-card">0</div>
               <div class="texto-card">Atendimentos Agendados</div>
             </div>
           </div>
@@ -152,7 +152,7 @@
 
           <div class="card-filtros">
             <div class="campo-busca">
-              <input type="search" placeholder="Buscar aluno por nome">
+              <input type="search" id="buscaTabelaAlunos" placeholder="Buscar aluno por nome">
             </div>
 
             <select>
@@ -239,7 +239,7 @@
 
           <div class="card-filtros">
             <div class="campo-busca">
-              <input type="search" placeholder="Buscar curso por nome">
+              <input type="search" id="buscaTabelaCursos" placeholder="Buscar curso por nome">
             </div>
 
             <select>
@@ -280,16 +280,16 @@
           <h1>Cadastro de Curso</h1>
 
           <div class="card-formulario">
-            <form class="formulario-visual">
+            <form id="formCurso" class="formulario-visual">
               <div class="grade-formulario">
                 <div>
                   <label>Nome do curso <span class="obrigatorio">*</span></label>
-                  <input placeholder="Ex: Matemática Básica">
+                  <input id="nomeCurso" placeholder="Ex: Matemática Básica">
                 </div>
 
                 <div>
                   <label>Nível <span class="obrigatorio">*</span></label>
-                  <select>
+                  <select id="nivelCurso">
                     <option>Selecione o nível</option>
                     <option>Básico</option>
                     <option>Intermediário</option>
@@ -299,7 +299,7 @@
 
                 <div>
                   <label>Quantidade de vagas <span class="obrigatorio">*</span></label>
-                  <input type="number" placeholder="Ex: 30">
+                  <input id="vagasTotaisCurso" type="number" placeholder="Ex: 30">
                 </div>
 
                 <div>
@@ -378,28 +378,28 @@
           <p class="subtitulo">Registrar atendimento para um aluno</p>
 
           <div class="card-formulario">
-            <form class="formulario-visual">
+            <form id="formAtendimento" class="formulario-visual">
               <div class="grade-formulario">
                 <div>
                   <label>Selecionar Aluno <span class="obrigatorio">*</span></label>
-                  <select>
+                  <select id="atendimentoAluno"> 
                     <option>Selecione um aluno</option>
                   </select>
                 </div>
 
                 <div>
                   <label>Data do Atendimento <span class="obrigatorio">*</span></label>
-                  <input type="date">
+                  <input type="date" id="atendimentoData">
                 </div>
 
                 <div>
                   <label>Horário <span class="obrigatorio">*</span></label>
-                  <input type="time">
+                  <input type="time" id="atendimentoHorario">
                 </div>
 
                 <div>
                   <label>Motivo <span class="obrigatorio">*</span></label>
-                  <input placeholder="Ex: Dificuldade em matemática">
+                  <input id="atendimentoMotivo" placeholder="Ex: Dificuldade em matemática">
                 </div>
 
                 <div class="linha-inteira">
@@ -719,10 +719,13 @@
 
     function configurarFormularios() {
       elementos.formularios.forEach(function(formulario) {
-        // Ignora os formulários que possuem regras e conexões próprias com a API
-        if (formulario.id === 'formAluno' || formulario.id === 'formMatricula') {
+        // Adicione aqui todos os IDs que você já criou lógica própria
+        const idsIgnorados = ['formAluno', 'formMatricula', 'formCurso', 'formAtendimento'];
+        
+        if (idsIgnorados.includes(formulario.id)) {
           return;
         }
+        
         formulario.addEventListener('submit', function(evento) {
           evento.preventDefault();
           mostrarMensagem(configuracao.mensagens.formulario);
@@ -777,6 +780,7 @@
         if (resposta.ok) {
             mostrarMensagem(resultado.mensagem || 'Aluno cadastrado com sucesso!');
             await carregarAlunos(); // Atualiza a tabela e o contador
+            await carregarDadosParaBusca(); // Atualiza os dados de busca para matrículas
             formAluno.reset();
             abrirTela('alunos'); // Opcional: Redireciona para a lista
         } else {
@@ -817,7 +821,7 @@
               <td>${aluno.nivel || '-'}</td>
               <td>
                 <i data-lucide="edit" size="18" style="cursor:pointer; margin-right:8px; color:#64748b;"></i>
-                <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;"></i>
+                <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;" onclick="removerAluno(${aluno.id_aluno})"></i>
               </td>
             </tr>
           `;
@@ -826,6 +830,15 @@
         // Atualiza o contador de alunos na tela inicial
         document.getElementById('contadorAlunos').textContent = alunos.length;
         
+        
+        const selectAtendimento = document.getElementById('atendimentoAluno');
+          if (selectAtendimento) {
+            selectAtendimento.innerHTML = '<option value="">Selecione um aluno</option>';
+            alunos.forEach(aluno => {
+              selectAtendimento.innerHTML += `<option value="${aluno.id_aluno}">${aluno.nome}</option>`;
+            });
+          }
+
         // Renderiza os novos ícones adicionados dinamicamente
         atualizarIcones();
 
@@ -946,6 +959,194 @@
       }
     });
 
+// --- FUNÇÃO REMOVER ALUNO ---
+    async function removerAluno(idAluno) {
+      if (!confirm('Tem a certeza de que deseja remover este aluno?')) return;
+
+      try {
+        const resposta = await fetch(`/api/alunos/${idAluno}`, { method: 'DELETE' });
+        if (resposta.ok) {
+          mostrarMensagem('Aluno removido com sucesso!');
+          await carregarAlunos(); 
+          await carregarDadosParaBusca(); // Mantém as listas de matrícula atualizadas
+        } else {
+          mostrarMensagem('Erro ao remover aluno.');
+        }
+      } catch (erro) {
+        mostrarMensagem('Falha de conexão.');
+      }
+    }
+
+    async function removerCurso(idCurso) {
+      if (!confirm('Tem a certeza de que deseja remover este curso?')) return;
+
+      try {
+        const resposta = await fetch(`/api/cursos/${idCurso}`, { method: 'DELETE' });
+        if (resposta.ok) {
+          mostrarMensagem('Curso removido com sucesso!');
+          await carregarCursos(); // Recarrega a tabela e o contador
+          await carregarDadosParaBusca(); // Atualiza a busca de matrículas
+        } else {
+          mostrarMensagem('Erro ao remover curso.');
+        }
+      } catch (erro) {
+        mostrarMensagem('Falha de conexão.');
+      }
+    }
+
+    // --- CADASTRO DE CURSOS ---
+    const formCurso = document.getElementById('formCurso');
+      if (formCurso) {
+        formCurso.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const dadosCurso = {
+            nome: document.getElementById('nomeCurso').value,
+            nivel: document.getElementById('nivelCurso').value,
+            vagas_totais: parseInt(document.getElementById('vagasTotaisCurso').value)
+          };
+
+          try {
+            const resposta = await fetch('/api/cursos', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(dadosCurso)
+            });
+
+            if (resposta.ok) {
+              mostrarMensagem('Curso cadastrado com sucesso!');
+              formCurso.reset();
+              abrirTela('cursos');
+              await carregarCursos(); // Atualiza a tabela de cursos
+            } else {
+              mostrarMensagem('Erro ao cadastrar o curso.');
+            }
+          } catch (erro) {
+            mostrarMensagem('Erro de conexão ao salvar curso.');
+          }
+        });
+      }
+
+    // --- AGENDAR ATENDIMENTO ---
+    const formAtendimento = document.getElementById('formAtendimento');
+      if (formAtendimento) {
+        formAtendimento.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const dados = {
+            id_aluno: document.getElementById('atendimentoAluno').value,
+            data: document.getElementById('atendimentoData').value,
+            horario: document.getElementById('atendimentoHorario').value,
+            motivo: document.getElementById('atendimentoMotivo').value
+          };
+
+          try {
+            const res = await fetch('/api/atendimentos', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(dados)
+            });
+            if (res.ok) {
+              mostrarMensagem('Atendimento agendado!');
+              formAtendimento.reset();
+              await carregarAtendimentos() // Atualiza a tabela de atendimentos
+              abrirTela('atendimentos');
+            } else {
+              mostrarMensagem('Erro ao agendar.');
+            }
+          } catch (err) { mostrarMensagem('Erro de conexão.'); }
+        });
+      }
+
+    async function carregarCursos() {
+      try {
+        const resposta = await fetch('/api/cursos');
+        const cursos = await resposta.json();
+        const tbody = document.querySelector('#cursos tbody');
+
+        if (cursos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="estado-vazio">Nenhum curso cadastrado.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = '';
+        cursos.forEach(curso => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${curso.nome}</td>
+              <td>${curso.nivel}</td>
+              <td>${curso.vagas_totais}</td>
+              <td>${curso.vagas_ocupadas || 0}</td>
+              <td>${curso.vagas_ocupadas >= curso.vagas_totais ? 'Lotado' : 'Disponível'}</td>
+              <td>
+                <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;" onclick="removerCurso(${curso.id_curso})"></i>
+              </td>
+            </tr>
+          `;
+        });
+        document.getElementById('contadorCursos').textContent = cursos.length;
+
+        atualizarIcones();
+      } catch (erro) {
+        console.error("Erro ao carregar cursos:", erro);
+      }
+    }
+
+    // --- LÓGICA DE ATENDIMENTOS (LISTAR E EXCLUIR) ---
+    async function carregarAtendimentos() {
+      try {
+        const resposta = await fetch('/api/atendimentos');
+        const atendimentos = await resposta.json();
+        const tbody = document.querySelector('#atendimentos tbody');
+
+        if (atendimentos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="estado-vazio">Nenhum atendimento agendado.</td></tr>';
+          document.getElementById('contadorAtendimentos').textContent = 0;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        atendimentos.forEach(atend => {
+          // Define a cor da etiqueta baseada no status
+          let classeStatus = 'agendado';
+          if (atend.status === 'realizado') classeStatus = 'realizado';
+          else if (atend.status === 'cancelado') classeStatus = 'cancelado';
+
+          tbody.innerHTML += `
+            <tr>
+              <td>${atend.aluno}</td>
+              <td>${atend.data}</td>
+              <td>${atend.horario}</td>
+              <td>${atend.motivo}</td>
+              <td><span class="etiqueta ${classeStatus}">${atend.status || 'Agendado'}</span></td>
+              <td>
+                <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;" onclick="removerAtendimento(${atend.id_atendimento})"></i>
+              </td>
+            </tr>
+          `;
+        });
+        
+        // Atualiza o contador do início
+        document.getElementById('contadorAtendimentos').textContent = atendimentos.length;
+        atualizarIcones();
+      } catch (erro) {
+        console.error("Erro ao carregar atendimentos:", erro);
+      }
+    }
+
+    async function removerAtendimento(idAtendimento) {
+      if (!confirm('Deseja cancelar/remover este atendimento?')) return;
+      try {
+        const resposta = await fetch(`/api/atendimentos/${idAtendimento}`, { method: 'DELETE' });
+        if (resposta.ok) {
+          mostrarMensagem('Atendimento removido!');
+          await carregarAtendimentos(); // Recarrega a tabela
+        } else {
+          mostrarMensagem('Erro ao remover.');
+        }
+      } catch (erro) {
+        mostrarMensagem('Falha de conexão.');
+      }
+    }
+    
    async function iniciarAplicacao() {
       configurarLogin();
       configurarNavegacao();
@@ -953,11 +1154,38 @@
       configurarBotoesDeCancelar();
       configurarLogout();
       atualizarIcones();
+      configurarFiltrosTabelas();
 
-      // Inicializa os dados e os listeners dos campos de busca inteligente
+      await carregarAlunos(); 
+      await carregarCursos(); 
+      await carregarAtendimentos();
+      // -----------------------------
+
       await carregarDadosParaBusca();
       configurarCampoPesquisa('buscaAluno', 'idAlunoSelecionado', 'listaSugestoesAluno', dadosAlunos, 'nome');
       configurarCampoPesquisa('buscaCurso', 'idCursoSelecionado', 'listaSugestoesCurso', dadosCursos, 'nome');
+        }
+
+    function configurarFiltrosTabelas() {
+      const buscaAlunos = document.getElementById('buscaTabelaAlunos');
+      const buscaCursos = document.getElementById('buscaTabelaCursos');
+
+      function filtrarTabela(input, seletorTabela) {
+        if(!input) return;
+        input.addEventListener('input', function() {
+          const termo = this.value.toLowerCase();
+          const linhas = document.querySelectorAll(`${seletorTabela} tbody tr`);
+          
+          linhas.forEach(linha => {
+            if(linha.querySelector('.estado-vazio')) return;
+            const textoLinha = linha.textContent.toLowerCase();
+            linha.style.display = textoLinha.includes(termo) ? '' : 'none';
+          });
+        });
+      }
+
+      filtrarTabela(buscaAlunos, '#alunos table');
+      filtrarTabela(buscaCursos, '#cursos table');
     }
 
     iniciarAplicacao();

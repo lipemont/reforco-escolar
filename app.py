@@ -162,10 +162,29 @@ def delete_aluno(id_aluno):
     cursor = None
     try:
         conexao = conectar()
-        cursor = conexao.cursor()
-        cursor.execute("DELETE FROM alunos WHERE id_aluno = %s", (id_aluno,))
-        if cursor.rowcount == 0:
+        cursor = conexao.cursor(dictionary=True)
+
+        # 1. Verifica se o aluno existe
+        cursor.execute("SELECT id_aluno FROM alunos WHERE id_aluno = %s", (id_aluno,))
+        if not cursor.fetchone():
             return jsonify({"erro": "Aluno não encontrado"}), 404
+
+        # 2. Diminuir as vagas dos cursos em que este aluno estava matriculado
+        cursor.execute("SELECT id_curso FROM matriculas WHERE id_aluno = %s", (id_aluno,))
+        cursos_matriculados = cursor.fetchall()
+        for c in cursos_matriculados:
+            cursor.execute(
+                "UPDATE cursos SET vagas_ocupadas = vagas_ocupadas - 1 WHERE id_curso = %s AND vagas_ocupadas > 0",
+                (c['id_curso'],)
+            )
+
+        # 3. Remover os vínculos (Matrículas e Atendimentos)
+        cursor.execute("DELETE FROM matriculas WHERE id_aluno = %s", (id_aluno,))
+        cursor.execute("DELETE FROM atendimentos WHERE id_aluno = %s", (id_aluno,))
+
+        # 4. Finalmente, remover o aluno
+        cursor.execute("DELETE FROM alunos WHERE id_aluno = %s", (id_aluno,))
+        
         conexao.commit()
         return jsonify({"mensagem": "Aluno removido com sucesso!"}), 200
     except Exception as e:
@@ -300,9 +319,18 @@ def delete_curso(id_curso):
     try:
         conexao = conectar()
         cursor = conexao.cursor()
-        cursor.execute("DELETE FROM cursos WHERE id_curso = %s", (id_curso,))
-        if cursor.rowcount == 0:
+
+        # 1. Verifica se o curso existe
+        cursor.execute("SELECT id_curso FROM cursos WHERE id_curso = %s", (id_curso,))
+        if not cursor.fetchone():
             return jsonify({"erro": "Curso não encontrado"}), 404
+
+        # 2. Remover todas as matrículas atreladas a este curso
+        cursor.execute("DELETE FROM matriculas WHERE id_curso = %s", (id_curso,))
+
+        # 3. Remover o curso
+        cursor.execute("DELETE FROM cursos WHERE id_curso = %s", (id_curso,))
+        
         conexao.commit()
         return jsonify({"mensagem": "Curso removido com sucesso!"}), 200
     except Exception as e:
@@ -471,6 +499,13 @@ def get_atendimentos():
             JOIN alunos al ON al.id_aluno = at.id_aluno
         """)
         atendimentos = cursor.fetchall()
+
+        for at in atendimentos:
+            if at['data']:
+                at['data'] = str(at['data'])
+            if at['horario']:
+                at['horario'] = str(at['horario'])
+
         return jsonify(atendimentos), 200
     except Exception as e:
         return jsonify({"erro": str(e)}), 500
