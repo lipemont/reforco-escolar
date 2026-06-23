@@ -136,7 +136,7 @@
               Criar Curso
             </button>
 
-            <button class="botao-azul" data-tela="matriculas">
+            <button class="botao-azul" data-tela="cadastroMatricula">
               <i data-lucide="plus"></i>
               Nova Matrícula
             </button>
@@ -149,7 +149,7 @@
 
           <div class="painel">
             <div class="cabecalho-painel">Próximos atendimentos</div>
-            <div class="estado-vazio">Nenhum atendimento agendado.</div>
+            <div id="proximosAtendimentos" class="estado-vazio">Nenhum atendimento agendado.</div>
           </div>
         </section>
 
@@ -159,10 +159,10 @@
 
           <div class="card-filtros">
             <div class="campo-busca">
-              <input type="search" id="buscaTabelaAlunos" placeholder="Buscar aluno por nome">
+              <input type="text" id="buscaTabelaAlunos" placeholder="Buscar aluno por nome">
             </div>
 
-            <select>
+            <select id="filtroNivelAlunos">
               <option>Todos os níveis</option>
               <option>Básico</option>
               <option>Intermediário</option>
@@ -226,10 +226,6 @@
                   </select>
                 </div>
 
-                <div class="linha-inteira">
-                  <label>Observações</label>
-                  <textarea placeholder="Informações adicionais sobre o aluno"></textarea>
-                </div>
               </div>
 
               <div class="acoes-formulario">
@@ -246,10 +242,10 @@
 
           <div class="card-filtros">
             <div class="campo-busca">
-              <input type="search" id="buscaTabelaCursos" placeholder="Buscar curso por nome">
+              <input type="text" id="buscaTabelaCursos" placeholder="Buscar curso por nome">
             </div>
 
-            <select>
+            <select id="filtroNivelCursos">
               <option>Todos os níveis</option>
               <option>Básico</option>
               <option>Intermediário</option>
@@ -308,16 +304,6 @@
                   <label>Quantidade de vagas <span class="obrigatorio">*</span></label>
                   <input id="vagasTotaisCurso" type="number" placeholder="Ex: 30">
                 </div>
-
-                <div>
-                  <label>Carga horária</label>
-                  <input placeholder="Ex: 40h">
-                </div>
-
-                <div class="linha-inteira">
-                  <label>Descrição do curso</label>
-                  <textarea placeholder="Descreva o conteúdo do curso"></textarea>
-                </div>
               </div>
 
               <div class="acoes-formulario">
@@ -329,6 +315,40 @@
         </section>
 
         <section id="matriculas" class="tela oculto">
+          <h1>Matrículas</h1>
+          <p class="subtitulo">Lista de matrículas cadastradas</p>
+
+          <div class="card-filtros" style="grid-template-columns: 1fr auto;">
+            <div class="campo-busca">
+              <input type="text" id="buscaTabelaMatriculas" placeholder="Buscar matrícula por nome do aluno">
+            </div>
+
+            <button class="botao-azul" data-tela="cadastroMatricula">
+              <i data-lucide="plus"></i>
+              Nova Matrícula
+            </button>
+          </div>
+
+          <div class="card-tabela">
+            <table>
+              <thead>
+                <tr>
+                  <th>Aluno</th>
+                  <th>Curso</th>
+                  <th>Data da Matrícula</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaMatriculas">
+                <tr>
+                  <td colspan="4" class="estado-vazio">Nenhuma matrícula cadastrada.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="cadastroMatricula" class="tela oculto">
           <h1>Nova Matrícula</h1>
           <p class="subtitulo">Vincular aluno a um curso</p>
 
@@ -359,7 +379,7 @@
               <input type="date" id="dataMatricula">
 
               <div class="acoes-formulario">
-                <button type="button" class="botao-contorno" data-tela="inicio">Cancelar</button>
+                <button type="button" class="botao-cinza" data-tela="matriculas">Cancelar</button>
                 <button type="submit" class="botao-azul">Matricular</button>
               </div>
             </form>
@@ -395,9 +415,13 @@
                   <input id="atendimentoMotivo" placeholder="Ex: Dificuldade em matemática">
                 </div>
 
-                <div class="linha-inteira">
-                  <label>Observações</label>
-                  <textarea placeholder="Detalhes adicionais sobre o atendimento"></textarea>
+                <div>
+                  <label>Status</label>
+                  <select id="atendimentoStatus">
+                    <option value="agendado">Agendado</option>
+                    <option value="realizado">Realizado</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
                 </div>
               </div>
 
@@ -413,12 +437,10 @@
           <h1>Atendimentos</h1>
           <p class="subtitulo">Lista de atendimentos agendados</p>
 
-          <div class="card-filtros card-filtros-atendimento">
+          <div class="card-filtros" style="grid-template-columns: 1fr 200px auto;">
             <div class="campo-busca">
-              <input type="search" placeholder="Buscar por nome do aluno">
+              <input type="text" id="buscaTabelaAtendimentos" placeholder="Buscar por nome do aluno">
             </div>
-
-            <input type="date">
 
             <select>
               <option>Todos</option>
@@ -466,6 +488,7 @@
       telasComMenuRelacionado: {
         cadastroAluno: 'alunos',
         cadastroCurso: 'cursos',
+        cadastroMatricula: 'matriculas',
         cadastroAtendimento: 'atendimentos'
       },
       mensagens: {
@@ -580,7 +603,7 @@
       adicionarClasse(elementos.telaLogin, 'oculto');
       removerClasse(elementos.aplicacao, 'oculto');
       abrirTela(configuracao.telaInicial);
-      carregarAlunos(); // Carrega os dados da API ao logar
+      carregarAlunos(); 
       mostrarMensagem(configuracao.mensagens.login);
     }
 
@@ -636,13 +659,42 @@
         }
 
         const telaDestino = botaoNavegacao.dataset.tela;
+
+        // Se for navegar para formulários de criação via botão, garante que não fica em modo edição
+        if (telaDestino === 'cadastroAtendimento') {
+          idAtendimentoEditando = null;
+          const formAtend = document.getElementById('formAtendimento');
+          if (formAtend) formAtend.reset();
+          document.querySelector('#cadastroAtendimento h1').textContent = 'Agendar Atendimento';
+        }
+        if (telaDestino === 'cadastroAluno') {
+          idAlunoEditando = null;
+          const formAl = document.getElementById('formAluno');
+          if (formAl) formAl.reset();
+          document.querySelector('#cadastroAluno h1').textContent = 'Cadastro de Aluno';
+        }
+        if (telaDestino === 'cadastroCurso') {
+          idCursoEditando = null;
+          const formCur = document.getElementById('formCurso');
+          if (formCur) formCur.reset();
+          document.querySelector('#cadastroCurso h1').textContent = 'Cadastro de Curso';
+        }
+        if (telaDestino === 'cadastroMatricula') {
+          idMatriculaEditando = null;
+          const formMat = document.getElementById('formMatricula');
+          if (formMat) formMat.reset();
+          document.getElementById('idAlunoSelecionado').value = '';
+          document.getElementById('idCursoSelecionado').value = '';
+          document.querySelector('#cadastroMatricula h1').textContent = 'Nova Matrícula';
+        }
+
         abrirTela(telaDestino);
       });
     }
 
     function configurarFormularios() {
       elementos.formularios.forEach(function(formulario) {
-        // Adicione aqui todos os IDs que você já criou lógica própria
+       
         const idsIgnorados = ['formAluno', 'formMatricula', 'formCurso', 'formAtendimento'];
         
         if (idsIgnorados.includes(formulario.id)) {
@@ -690,28 +742,31 @@
       };
 
       try {
-        const resposta = await fetch('/api/alunos', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+        const url = idAlunoEditando ? `/api/alunos/${idAlunoEditando}` : '/api/alunos';
+        const metodo = idAlunoEditando ? 'PUT' : 'POST';
+
+        const resposta = await fetch(url, {
+          method: metodo,
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dados)
         });
 
         const resultado = await resposta.json();
         
         if (resposta.ok) {
-            mostrarMensagem(resultado.mensagem || 'Aluno cadastrado com sucesso!');
-            await carregarAlunos(); // Atualiza a tabela e o contador
-            await carregarDadosParaBusca(); // Atualiza os dados de busca para matrículas
+            mostrarMensagem(idAlunoEditando ? 'Aluno atualizado com sucesso!' : (resultado.mensagem || 'Aluno cadastrado com sucesso!'));
+            idAlunoEditando = null;
+            document.querySelector('#cadastroAluno h1').textContent = 'Cadastro de Aluno';
+            await carregarAlunos(); 
+            await carregarDadosParaBusca(); 
             formAluno.reset();
-            abrirTela('alunos'); // Opcional: Redireciona para a lista
+            abrirTela('alunos'); 
         } else {
-            mostrarMensagem(resultado.erro || 'Erro ao cadastrar aluno.');
+            mostrarMensagem(resultado.erro || 'Erro ao salvar aluno.');
         }
 
       } catch (erro) {
-        mostrarMensagem('Erro de conexão ao cadastrar aluno.');
+        mostrarMensagem('Erro de conexão ao salvar aluno.');
         console.error(erro);
       }
     });
@@ -739,7 +794,7 @@ async function carregarAlunos() {
               <td>${aluno.telefone || '-'}</td>
               <td>${aluno.nivel || '-'}</td>
               <td>
-                <i data-lucide="edit" size="18" style="cursor:pointer; margin-right:8px; color:#64748b;"></i>
+                <i data-lucide="edit" size="18" style="cursor:pointer; margin-right:8px; color:#64748b;" onclick="editarAluno(${aluno.id_aluno}, '${aluno.nome}', '${aluno.email}', '${aluno.telefone || ''}', '${aluno.nivel || ''}')"></i>
                 <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;" onclick="removerAluno(${aluno.id_aluno})"></i>
               </td>
             </tr>
@@ -763,13 +818,11 @@ async function carregarAlunos() {
     }
 
     
-        // --- LÓGICA DE BUSCA E AUTOCOMPLETAR (MATRÍCULAS) ---
+       
 
     let dadosAlunos = [];
     let dadosCursos = [];
 
-    // Busca as listas brutas da API para alimentar os campos de pesquisa
-    // Busca as listas brutas da API para alimentar os campos de pesquisa sem quebrar a referência
     async function carregarDadosParaBusca() {
       try {
         const [resAlunos, resCursos] = await Promise.all([
@@ -780,16 +833,16 @@ async function carregarAlunos() {
         if (resAlunos.ok) {
           const novosAlunos = await resAlunos.json();
           if (Array.isArray(novosAlunos)) {
-            dadosAlunos.length = 0; // Limpa o array mantendo a referência
-            dadosAlunos.push(...novosAlunos); // Injeta os novos dados
+            dadosAlunos.length = 0; 
+            dadosAlunos.push(...novosAlunos); 
           }
         }
 
         if (resCursos.ok) {
           const novosCursos = await resCursos.json();
           if (Array.isArray(novosCursos)) {
-            dadosCursos.length = 0; // Limpa o array mantendo a referência
-            dadosCursos.push(...novosCursos); // Injeta os novos dados
+            dadosCursos.length = 0; 
+            dadosCursos.push(...novosCursos); 
           }
         }
       } catch (erro) {
@@ -837,7 +890,7 @@ async function carregarAlunos() {
         containerLista.classList.remove('oculto');
       });
 
-      // Fecha a lista suspensa se o usuário clicar fora do campo
+      
       document.addEventListener('click', function(e) {
         if (!inputBusca.contains(e.target) && !containerLista.contains(e.target)) {
           containerLista.classList.add('oculto');
@@ -845,7 +898,7 @@ async function carregarAlunos() {
       });
     }
 
-    // Envio do formulário de matrícula para a API
+    
     const formMatricula = document.getElementById('formMatricula');
     formMatricula.addEventListener('submit', async function(evento) {
       evento.preventDefault();
@@ -855,17 +908,26 @@ async function carregarAlunos() {
       const dataMatricula = document.getElementById('dataMatricula').value;
 
       if (!idAluno || !idCurso) {
-        mostrarMensagem('Por favor, selecione opções válidas diretamente nas listas!');
+        mostrarMensagem('Por favor, selecione o aluno e o curso diretamente nas listas!');
         return;
       }
 
-      const dadosMatricula = {
-        aluno_id: idAluno,
-        curso_id: idCurso,
-        data: dataMatricula
-      };
-
       try {
+        // Se for edição, remove a matrícula antiga primeiro
+        if (idMatriculaEditando) {
+          const resDelete = await fetch(`/api/matriculas/${idMatriculaEditando}`, { method: 'DELETE' });
+          if (!resDelete.ok) {
+            mostrarMensagem('Erro ao atualizar matrícula.');
+            return;
+          }
+        }
+
+        const dadosMatricula = {
+          aluno_id: idAluno,
+          curso_id: idCurso,
+          data: dataMatricula
+        };
+
         const resposta = await fetch('/api/matriculas', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -875,11 +937,15 @@ async function carregarAlunos() {
         const resultado = await resposta.json();
 
         if (resposta.ok) {
-          mostrarMensagem('Matrícula realizada com sucesso!');
+          mostrarMensagem(idMatriculaEditando ? 'Matrícula atualizada com sucesso!' : 'Matrícula realizada com sucesso!');
+          idMatriculaEditando = null;
+          document.querySelector('#cadastroMatricula h1').textContent = 'Nova Matrícula';
           formMatricula.reset();
           document.getElementById('idAlunoSelecionado').value = '';
           document.getElementById('idCursoSelecionado').value = '';
-          abrirTela('inicio'); 
+          await carregarMatriculas();
+          await carregarCursos();
+          abrirTela('matriculas');
         } else {
           mostrarMensagem(resultado.erro || 'Erro ao realizar matrícula.');
         }
@@ -936,21 +1002,26 @@ async function carregarAlunos() {
           };
 
           try {
-            const resposta = await fetch('/api/cursos', {
-              method: 'POST',
+            const url = idCursoEditando ? `/api/cursos/${idCursoEditando}` : '/api/cursos';
+            const metodo = idCursoEditando ? 'PUT' : 'POST';
+
+            const resposta = await fetch(url, {
+              method: metodo,
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(dadosCurso)
             });
 
             if (resposta.ok) {
-              mostrarMensagem('Curso cadastrado com sucesso!');
+              mostrarMensagem(idCursoEditando ? 'Curso atualizado com sucesso!' : 'Curso cadastrado com sucesso!');
+              idCursoEditando = null;
+              document.querySelector('#cadastroCurso h1').textContent = 'Cadastro de Curso';
               formCurso.reset();
               abrirTela('cursos');
-              await carregarCursos(); // Atualiza a tabela de cursos
-              await carregarDadosParaBusca(); // ✨ ADICIONADO AQUI: Agora atualiza a busca de matrículas na hora!
+              await carregarCursos();
+              await carregarDadosParaBusca();
             } else {
               const resultadoErro = await resposta.json().catch(() => ({}));
-              mostrarMensagem(resultadoErro.erro || 'Erro ao cadastrar o curso.');
+              mostrarMensagem(resultadoErro.erro || 'Erro ao salvar o curso.');
             }
           } catch (erro) {
             mostrarMensagem('Erro de conexão ao salvar curso.');
@@ -963,26 +1034,39 @@ async function carregarAlunos() {
       if (formAtendimento) {
         formAtendimento.addEventListener('submit', async function(e) {
           e.preventDefault();
+          const idAluno = document.getElementById('atendimentoAluno').value;
+
+          if (!idAluno || isNaN(idAluno)) {
+            mostrarMensagem('Por favor, selecione um aluno válido!');
+            return;
+          }
+
           const dados = {
-            id_aluno: document.getElementById('atendimentoAluno').value,
+            id_aluno: idAluno,
             data: document.getElementById('atendimentoData').value,
             horario: document.getElementById('atendimentoHorario').value,
-            motivo: document.getElementById('atendimentoMotivo').value
+            motivo: document.getElementById('atendimentoMotivo').value,
+            status: document.getElementById('atendimentoStatus').value
           };
 
           try {
-            const res = await fetch('/api/atendimentos', {
-              method: 'POST',
+            const url = idAtendimentoEditando ? `/api/atendimentos/${idAtendimentoEditando}` : '/api/atendimentos';
+            const metodo = idAtendimentoEditando ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+              method: metodo,
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(dados)
             });
             if (res.ok) {
-              mostrarMensagem('Atendimento agendado!');
+              mostrarMensagem(idAtendimentoEditando ? 'Atendimento atualizado!' : 'Atendimento agendado!');
+              idAtendimentoEditando = null;
+              document.querySelector('#cadastroAtendimento h1').textContent = 'Agendar Atendimento';
               formAtendimento.reset();
-              await carregarAtendimentos() // Atualiza a tabela de atendimentos
+              await carregarAtendimentos();
               abrirTela('atendimentos');
             } else {
-              mostrarMensagem('Erro ao agendar.');
+              mostrarMensagem('Erro ao salvar atendimento.');
             }
           } catch (err) { mostrarMensagem('Erro de conexão.'); }
         });
@@ -1011,6 +1095,7 @@ async function carregarAlunos() {
               <td>${curso.vagas_ocupadas || 0}</td>
               <td>${curso.vagas_ocupadas >= curso.vagas_totais ? 'Lotado' : 'Disponível'}</td>
               <td>
+                <i data-lucide="edit" size="18" style="cursor:pointer; margin-right:8px; color:#64748b;" onclick="editarCurso(${curso.id_curso}, '${curso.nome}', '${curso.nivel}', ${curso.vagas_totais})"></i>
                 <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;" onclick="removerCurso(${curso.id_curso})"></i>
               </td>
             </tr>
@@ -1021,6 +1106,56 @@ async function carregarAlunos() {
         atualizarIcones();
       } catch (erro) {
         console.error("Erro ao carregar cursos:", erro);
+      }
+    }
+
+    // --- LÓGICA DE MATRÍCULAS (LISTAR E EXCLUIR) ---
+    async function carregarMatriculas() {
+      try {
+        const resposta = await fetch('/api/matriculas');
+        const matriculas = await resposta.json();
+        const tbody = document.getElementById('tabelaMatriculas');
+
+        if (!Array.isArray(matriculas) || matriculas.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="estado-vazio">Nenhuma matrícula cadastrada.</td></tr>';
+          document.getElementById('contadorMatriculas').textContent = 0;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        matriculas.forEach(m => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${m.aluno}</td>
+              <td>${m.curso}</td>
+              <td>${m.data_matricula ? new Date(m.data_matricula).toLocaleDateString('pt-BR', {timeZone: 'UTC'}) : '-'}</td>
+              <td>
+                <i data-lucide="edit" size="18" style="cursor:pointer; margin-right:8px; color:#64748b;" onclick="editarMatricula(${m.id_matricula}, '${m.aluno}', '${m.curso}', '${m.data_matricula || ''}')"></i>
+                <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;" onclick="removerMatricula(${m.id_matricula})"></i>
+              </td>
+            </tr>
+          `;
+        });
+        document.getElementById('contadorMatriculas').textContent = matriculas.length;
+        atualizarIcones();
+      } catch (erro) {
+        console.error("Erro ao carregar matrículas:", erro);
+      }
+    }
+
+    async function removerMatricula(idMatricula) {
+      if (!confirm('Deseja cancelar esta matrícula?')) return;
+      try {
+        const resposta = await fetch(`/api/matriculas/${idMatricula}`, { method: 'DELETE' });
+        if (resposta.ok) {
+          mostrarMensagem('Matrícula cancelada com sucesso!');
+          await carregarMatriculas();
+          await carregarCursos(); // Atualiza vagas
+        } else {
+          mostrarMensagem('Erro ao cancelar matrícula.');
+        }
+      } catch (erro) {
+        mostrarMensagem('Falha de conexão.');
       }
     }
 
@@ -1052,6 +1187,7 @@ async function carregarAlunos() {
               <td>${atend.motivo}</td>
               <td><span class="etiqueta ${classeStatus}">${atend.status || 'Agendado'}</span></td>
               <td>
+                <i data-lucide="edit" size="18" style="cursor:pointer; margin-right:8px; color:#64748b;" onclick="editarAtendimento(${atend.id_atendimento}, ${atend.id_aluno}, '${atend.data}', '${atend.horario}', '${atend.motivo}', '${atend.status}')"></i>
                 <i data-lucide="trash-2" size="18" style="cursor:pointer; color:#ef4444;" onclick="removerAtendimento(${atend.id_atendimento})"></i>
               </td>
             </tr>
@@ -1059,6 +1195,45 @@ async function carregarAlunos() {
         });
         
         document.getElementById('contadorAtendimentos').textContent = atendimentos.length;
+
+        // Atualiza painel de próximos atendimentos na tela início
+        const painel = document.getElementById('proximosAtendimentos');
+        if (painel) {
+          const hoje = new Date().toISOString().split('T')[0];
+          const proximos = atendimentos
+            .filter(a => a.data >= hoje && a.status !== 'cancelado')
+            .sort((a, b) => a.data.localeCompare(b.data))
+            .slice(0, 5);
+
+          if (proximos.length === 0) {
+            painel.innerHTML = '<div class="estado-vazio">Nenhum atendimento agendado.</div>';
+          } else {
+            painel.innerHTML = `
+              <table>
+                <thead>
+                  <tr>
+                    <th>Aluno</th>
+                    <th>Data</th>
+                    <th>Horário</th>
+                    <th>Motivo</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${proximos.map(a => `
+                    <tr>
+                      <td>${a.aluno}</td>
+                      <td>${new Date(a.data).toLocaleDateString('pt-BR', {timeZone: 'UTC'})}</td>
+                      <td>${a.horario}</td>
+                      <td>${a.motivo}</td>
+                      <td><span class="etiqueta agendado">${a.status || 'Agendado'}</span></td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>`;
+          }
+        }
+
         atualizarIcones();
       } catch (erro) {
         console.error("Erro ao carregar atendimentos:", erro);
@@ -1080,45 +1255,116 @@ async function carregarAlunos() {
       }
     }
     
-   async function iniciarAplicacao() {
+    // --- EDITAR ALUNO ---
+    let idAlunoEditando = null;
+
+    function editarAluno(id, nome, email, telefone, nivel) {
+      idAlunoEditando = id;
+      document.getElementById('nomeAluno').value = nome;
+      document.getElementById('emailAluno').value = email;
+      document.getElementById('telefoneAluno').value = telefone;
+      const selNivel = document.getElementById('nivelAluno');
+      for (let op of selNivel.options) { if (op.value === nivel || op.text === nivel) op.selected = true; }
+      document.querySelector('#cadastroAluno h1').textContent = 'Editar Aluno';
+      abrirTela('cadastroAluno');
+    }
+
+    // --- EDITAR CURSO ---
+    let idCursoEditando = null;
+
+    function editarCurso(id, nome, nivel, vagas) {
+      idCursoEditando = id;
+      document.getElementById('nomeCurso').value = nome;
+      const selNivel = document.getElementById('nivelCurso');
+      for (let op of selNivel.options) { if (op.value === nivel || op.text === nivel) op.selected = true; }
+      document.getElementById('vagasTotaisCurso').value = vagas;
+      document.querySelector('#cadastroCurso h1').textContent = 'Editar Curso';
+      abrirTela('cadastroCurso');
+    }
+
+    // --- EDITAR MATRÍCULA ---
+    let idMatriculaEditando = null;
+
+    function editarMatricula(id, nomeAluno, nomeCurso, data) {
+      idMatriculaEditando = id;
+      // Preenche os campos de texto visíveis
+      document.getElementById('buscaAluno').value = nomeAluno;
+      document.getElementById('buscaCurso').value = nomeCurso;
+      // Limpa os hidden para forçar o usuário a reselecionar da lista
+      document.getElementById('idAlunoSelecionado').value = '';
+      document.getElementById('idCursoSelecionado').value = '';
+      if (data) document.getElementById('dataMatricula').value = data.split('T')[0];
+      document.querySelector('#cadastroMatricula h1').textContent = 'Editar Matrícula';
+      abrirTela('cadastroMatricula');
+    }
+
+    // --- EDITAR ATENDIMENTO ---
+    let idAtendimentoEditando = null;
+
+    function editarAtendimento(id, idAluno, data, horario, motivo, status) {
+      idAtendimentoEditando = id;
+      const selAluno = document.getElementById('atendimentoAluno');
+      for (let op of selAluno.options) { if (op.value == idAluno) op.selected = true; }
+      document.getElementById('atendimentoData').value = data;
+      document.getElementById('atendimentoHorario').value = horario.substring(0, 5);
+      document.getElementById('atendimentoMotivo').value = motivo;
+      const selStatus = document.getElementById('atendimentoStatus');
+      for (let op of selStatus.options) { if (op.value === status) op.selected = true; }
+      document.querySelector('#cadastroAtendimento h1').textContent = 'Editar Atendimento';
+      abrirTela('cadastroAtendimento');
+    }
+
+    async function iniciarAplicacao() {
       configurarLogin();
       configurarNavegacao();
       configurarFormularios();
       configurarBotoesDeCancelar();
       configurarLogout();
       atualizarIcones();
-      configurarFiltrosTabelas();
 
       await carregarAlunos(); 
       await carregarCursos(); 
+      await carregarMatriculas();
       await carregarAtendimentos();
       // -----------------------------
 
       await carregarDadosParaBusca();
       configurarCampoPesquisa('buscaAluno', 'idAlunoSelecionado', 'listaSugestoesAluno', dadosAlunos, 'nome');
       configurarCampoPesquisa('buscaCurso', 'idCursoSelecionado', 'listaSugestoesCurso', dadosCursos, 'nome');
+      configurarFiltrosTabelas();
         }
 
     function configurarFiltrosTabelas() {
       const buscaAlunos = document.getElementById('buscaTabelaAlunos');
       const buscaCursos = document.getElementById('buscaTabelaCursos');
+      const buscaAtendimentos = document.getElementById('buscaTabelaAtendimentos');
+      const filtroNivelAlunos = document.getElementById('filtroNivelAlunos');
+      const filtroNivelCursos = document.getElementById('filtroNivelCursos');
 
-      function filtrarTabela(input, seletorTabela) {
-        if(!input) return;
-        input.addEventListener('input', function() {
-          const termo = this.value.toLowerCase();
-          const linhas = document.querySelectorAll(`${seletorTabela} tbody tr`);
-          
+      function filtrarTabela(inputBusca, selectNivel, seletorTabela) {
+        if(!inputBusca && !selectNivel) return;
+        function executarFiltro() {
+          const termo = inputBusca ? inputBusca.value.toLowerCase() : '';
+          const nivel = selectNivel ? selectNivel.value : '';
+          const tabela = document.querySelector(seletorTabela);
+          if (!tabela) return;
+          const linhas = tabela.querySelectorAll('tbody tr');
           linhas.forEach(linha => {
             if(linha.querySelector('.estado-vazio')) return;
             const textoLinha = linha.textContent.toLowerCase();
-            linha.style.display = textoLinha.includes(termo) ? '' : 'none';
+            const passaBusca = textoLinha.includes(termo);
+            const passaNivel = !nivel || nivel === 'Todos os níveis' || textoLinha.includes(nivel.toLowerCase());
+            linha.style.display = passaBusca && passaNivel ? '' : 'none';
           });
-        });
+        }
+        if(inputBusca) { inputBusca.addEventListener('input', executarFiltro); inputBusca.addEventListener('keyup', executarFiltro); }
+        if(selectNivel) selectNivel.addEventListener('change', executarFiltro);
       }
 
-      filtrarTabela(buscaAlunos, '#alunos table');
-      filtrarTabela(buscaCursos, '#cursos table');
+      filtrarTabela(buscaAlunos, filtroNivelAlunos, '#alunos table');
+      filtrarTabela(buscaCursos, filtroNivelCursos, '#cursos table');
+      filtrarTabela(buscaAtendimentos, null, '#atendimentos table');
+      filtrarTabela(document.getElementById('buscaTabelaMatriculas'), null, '#matriculas table');
     }
 
     iniciarAplicacao();
